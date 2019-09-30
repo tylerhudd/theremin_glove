@@ -50,3 +50,14 @@ I came up with the concept for this project as a way to combine areas of my engi
 
 ### Block Diagram
 ![block diagram](/images/block_diagrams/overview_prelim_rev2.png)
+
+## Tools Used
+* Atmel Studio - for ATMega328P C firmware development and programming
+* KiCAD - for schematic capture and PCB design
+* LTSpice - for analog and power simulations
+* PuTTY - for serial console
+* Github - for configuration management and project documentation
+
+## Resources
+* http://musicfromouterspace.com/
+* https://oshpark.com/

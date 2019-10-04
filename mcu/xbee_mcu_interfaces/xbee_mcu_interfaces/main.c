@@ -10,13 +10,16 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "uart.h"
-#include "spi.h"
-#include "xbee.h"
-#include "mcu_io.h"
+#include "../../uart/uart.h"
+#include "../../spi/spi.h"
+#include "../../xbee/xbee.h"
+#include "../../io/mcu_io.h"
+
+char spi_miso_buf[64];
 
 int main(void)
 {
+	
 	// initialize UART interface
 	initUART();
 	
@@ -41,7 +44,10 @@ int main(void)
 		
 		// transmit to xbee
 		spi_xmit_api_string("Hello world!");
+		writeString(api_frame_decode(spi_miso_buf));
 		_delay_ms(1000);
     }
+	
+	return 0;
 }
 

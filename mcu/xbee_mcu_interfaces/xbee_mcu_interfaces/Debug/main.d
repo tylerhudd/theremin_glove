@@ -13,7 +13,8 @@ main.d main.o: .././main.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
- .././uart.h .././spi.h .././xbee.h .././mcu_io.h
+ .././../../uart/uart.h .././../../spi/spi.h .././../../xbee/xbee.h \
+ .././../../io/mcu_io.h
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -43,10 +44,10 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
 
-.././uart.h:
+.././../../uart/uart.h:
 
-.././spi.h:
+.././../../spi/spi.h:
 
-.././xbee.h:
+.././../../xbee/xbee.h:
 
-.././mcu_io.h:
+.././../../io/mcu_io.h:

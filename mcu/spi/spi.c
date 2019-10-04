@@ -11,18 +11,30 @@
 #include "../spi/spi.h"
 #include "../io/mcu_io.h"
 
+#define STARTCMD 0x7E
+
+char    spi_miso_buf[64];
+char    c_prev_rd_data;
+char    rd_data;
+uint8_t num_chars_rcv;   // number of characters received
+
+
 // SPI initialization function
-// Code from ATMega328 datasheet section 19
+// Code modified from ATMega328 datasheet section 19
 void spi_master_init(void)
 {
 	// Set SS_N, MOSI, and SCK output, all others input
 	DDRB  = (1<<SPI_SS_N) | (1<<SPI_MOSI) | (1<<SPI_SCK);
 	
 	// set the SPI control register
-	//   - SPE  = 1 --> SPI Interrupt enabled
+	//   - SPE  = 1 --> SPI  enabled
 	//   - MSTR = 1 --> SPI interface is in master mode
 	//   - SPR0 = 1 --> SCK frequency is fosc/16
 	SPCR  = (1<<SPE) | (1<<MSTR) | (1<<SPR0);
+	
+	// initialize global variables
+	c_prev_rd_data = 0xFF;
+	num_chars_rcv  = 0;
 }
 
 
@@ -45,16 +57,24 @@ void spi_set_ss_n(uint8_t ss_n)
 
 // SPI transmit char cData
 // Code modified from ATMega328 datasheet section 19
-char spi_xmit(char cData)
+void spi_xmit(char cData)
 {
-	// Start transmission
+	// Start transmission - writing SPI data register initiates transmission
 	SPDR = cData;
 	
 	// Wait for transmission complete - wait until SPI interrupt flag is cleared
 	while(!(SPSR & (1<<SPIF)));
 	
-	// Return byte received from slave
-	return SPDR;
+	// Read SPI data buffer
+	rd_data = SPDR;
+	
+	//spi_miso_buf[num_chars_rcv] = rd_data
+	if ( rd_data == STARTCMD || num_chars_rcv > 0 )
+	{
+		spi_miso_buf[num_chars_rcv] = rd_data;
+		num_chars_rcv++;
+	}
+	
 }
 
 
@@ -78,13 +98,12 @@ void spi_xmit_string(char sData[])
 // SPI transmit string in API frame format
 void spi_xmit_api_string(char sData[])
 {
-	int l_data = strlen(sData);
-	int i      = 0;
-	int i_checksum = 0;
-	int l_xmit = l_data + 14;
+	int l_data = strlen(sData);   // length of data message
+	int i      = 0;               // initialize loop increment variable
+	int i_checksum = 0;           // initialize checksum
+	int l_xmit = l_data + 14;     // length of api message (+14 bytes for type, id, address, etc.)
 	
-	char start = 0x7E;
-	char l_msb = (char) ((l_xmit & 0xFF00)>>8);
+	char l_msb = (char) ((l_xmit & 0xFF00)>>8);     // 2-byte length value
 	char l_lsb = (char) (l_xmit & 0xFF);
 	
 	char frame_type    = 0x10;                      // transmit request AT command
@@ -98,8 +117,9 @@ void spi_xmit_api_string(char sData[])
 	// assert slave select
 	spi_set_ss_n(0);
 	
+	
 	// transmit AT frames not counted in checksum
-	spi_xmit(start);
+	spi_xmit(STARTCMD);
 	spi_xmit(l_msb);
 	spi_xmit(l_lsb);
 	
@@ -133,14 +153,14 @@ void spi_xmit_api_string(char sData[])
 		spi_xmit(sData[i]);
 		i_checksum += sData[i];
 	}
-		
+	
+	// mask lower 8 bits and subtract from 0xFF
 	char c_checksum = (char) (i_checksum & 0xFF);
 	c_checksum = (char) (0xFF - c_checksum);
 	
+	// transmit calculated checksum
 	spi_xmit(c_checksum);
 	
+	// deassert slave select
 	spi_set_ss_n(1);
-	
-	
-	
 }

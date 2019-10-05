@@ -9,6 +9,7 @@
 #define UBRR  F_CPU/16/BAUD-1
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <util/delay.h>
 #include "../../uart/uart.h"
 #include "../../spi/spi.h"
@@ -17,8 +18,22 @@
 
 char spi_miso_buf[64];
 
+ISR(USART_RX_vect)
+{
+	char rxdata = (char)getByte();
+	char rfTX[3] = {rxdata,'\r','\n'};
+		
+	spi_xmit_api_string(rfTX);
+	putByte(rxdata);
+}
+
 int main(void)
 {
+	// enable all interrupts
+	sei();
+	
+	// enable uart interrupt
+	RX_INTEN();
 	
 	// initialize UART interface
 	initUART();
@@ -29,23 +44,22 @@ int main(void)
 	// initialize XBee to SPI mode
 	xbee_config_spi();
 	
-	// read back modem status to verify configuration
-	//while( !(PINB & (1<<SPI_ATTN_N)) )
-	//{
-		//spi_set_ss_n(0);
-		//char xbee_modem_status = spi_xmit(0xFF);
-		//spi_set_ss_n(1);
-		//spi_xmit_string("xbee_modem_status");
-	//}
+	spi_read();
 	
     while (1) 
     {
-		//writeString("repeating main loop\r\n");
-		
 		// transmit to xbee
-		spi_xmit_api_string("Hello world!");
-		writeString(api_frame_decode(spi_miso_buf));
-		_delay_ms(1000);
+		//spi_xmit_api_string("Hello world!\r\n");
+		//writeString(api_frame_decode(spi_miso_buf));
+		
+		if (SPI_ATTN_N_LOW)
+		{
+			writeString(api_frame_decode(spi_read()));
+			//writeString(spi_read());
+			//writeString("it's low\r\n");
+		}
+		
+		_delay_ms(100);
     }
 	
 	return 0;

@@ -36,7 +36,7 @@
 #define TX_STOP()		UCSR0B &= ~_BV(TXEN0)	// Disable TX
 #define RX_START()		UCSR0B |= _BV(RXEN0)	// Enable RX
 #define RX_STOP()		UCSR0B &= ~_BV(RXEN0)	// Disable RX
-#define COMM_START()		TX_START(); RX_START()	// Enable communications
+#define COMM_START()	TX_START(); RX_START()	// Enable communications
 
 /* Interrupt macros; Remember to set the GIE bit in SREG before using (see datasheet) */
 #define RX_INTEN()		UCSR0B |= _BV(RXCIE0)	// Enable interrupt on RX complete

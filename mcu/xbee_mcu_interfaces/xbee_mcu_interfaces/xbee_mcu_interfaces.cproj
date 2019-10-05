@@ -140,6 +140,10 @@
       <SubType>compile</SubType>
       <Link>uart.h</Link>
     </Compile>
+    <Compile Include="..\..\xbee\api_frame.h">
+      <SubType>compile</SubType>
+      <Link>api_frame.h</Link>
+    </Compile>
     <Compile Include="..\..\xbee\xbee.c">
       <SubType>compile</SubType>
       <Link>xbee.c</Link>

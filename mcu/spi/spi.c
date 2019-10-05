@@ -10,8 +10,7 @@
 #include <string.h>
 #include "../spi/spi.h"
 #include "../io/mcu_io.h"
-
-#define STARTCMD 0x7E
+#include "../xbee/api_frame.h"
 
 char    spi_miso_buf[64];
 char    c_prev_rd_data;
@@ -69,7 +68,7 @@ void spi_xmit(char cData)
 	rd_data = SPDR;
 	
 	//spi_miso_buf[num_chars_rcv] = rd_data
-	if ( rd_data == STARTCMD || num_chars_rcv > 0 )
+	if ( rd_data == API_START || num_chars_rcv > 0 )
 	{
 		spi_miso_buf[num_chars_rcv] = rd_data;
 		num_chars_rcv++;
@@ -119,7 +118,7 @@ void spi_xmit_api_string(char sData[])
 	
 	
 	// transmit AT frames not counted in checksum
-	spi_xmit(STARTCMD);
+	spi_xmit(API_START);
 	spi_xmit(l_msb);
 	spi_xmit(l_lsb);
 	
@@ -163,4 +162,35 @@ void spi_xmit_api_string(char sData[])
 	
 	// deassert slave select
 	spi_set_ss_n(1);
+}
+
+char* spi_read(void)
+{
+	int i = 0;
+	static char spi_msg[64] = {};
+	
+	spi_set_ss_n(0);
+	
+	num_chars_rcv = 0;
+	
+	for(i = 0; i<64 && SPI_ATTN_N_LOW; i++)
+	{
+		SPDR = 0xFF;
+		
+		while(!(SPSR & (1<<SPIF)));
+		
+		// Read SPI data buffer
+		rd_data = SPDR;
+		
+		//spi_miso_buf[num_chars_rcv] = rd_data
+		if ( rd_data == API_START || num_chars_rcv > 0 )
+		{
+			spi_msg[num_chars_rcv] = rd_data;
+			num_chars_rcv++;
+		}
+	}
+	
+	spi_set_ss_n(1);
+	
+	return spi_msg;
 }

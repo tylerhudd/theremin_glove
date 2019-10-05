@@ -10,6 +10,6 @@
 #define XBEE_H_
 
 void xbee_config_spi(void);
-const char* api_frame_decode(char *frame);
+char* api_frame_decode(char *frame);
 
 #endif /* XBEE_H_ */

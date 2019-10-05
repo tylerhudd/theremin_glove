@@ -18,7 +18,17 @@
 #define API_XMIT_STATUS 8
 #define API_NET_ADDR    12
 #define API_RCV_OPTION  14
-#define API_RCV_DATA    15
+#define API_RCV_DATA    8
+
+#define XBEE_CMD              0X08
+#define XBEE_CMD_VALUE        0x09
+#define XBEE_XMIT_REQUEST     0x10
+#define XBEE_ADDR_CMD         0x11
+#define XBEE_RMT_CMD_REQUEST  0x17
+#define XBEE_CREATE_SRC       0x21
+#define XBEE_REG_JOINING_DEV  0x24
+#define XBEE_BLE_UNLOCK_API   0x2D
+#define XBEE_CMD_RESPONSE     0x88
 
 #define XBEE_MODEM_STATUS     0x8A
 #define STATUS_HW_RST         0x00
@@ -52,11 +62,23 @@
 #define STATUS_DATA_EXCEEDED  0x74
 #define STATUS_UNREQUESTED    0x75
 
-#define XBEE_RCV_PACKET       0x90
+#define XBEE_RX               0x81
+#define XBEE_RX_PKT           0x90
 #define RCVOPT_PKT_ACK        0x01
 #define RCVOPT_PKT_BROAD      0x02
 #define RCVOPT_PKT_APS_ENC    0x20
 #define RCVOPT_PKT_FRM_END    0x40
+
+#define XBEE_EXP_RX_INDICATOR 0x91
+#define XBEE_IO_SAMPLE_RX     0x92
+#define XBEE_NODE_ID          0x95
+#define XBEE_RMT_CMD_RESPONSE 0x97
+#define XBEE_EX_MODEM_STATUS  0x98
+#define XBEE_ROUTE_RECORD     0xA1
+#define XBEE_REG_DEV_STATUS   0xA4
+#define XBEE_MANY2ONE_ROUTE   0xA3
+#define XBEE_BLE_UNLOCK_RSP   0xAC
+#define XBEE_USER_DATA_RELAY  0xAD
 
 
 #endif /* API_FRAME_H */

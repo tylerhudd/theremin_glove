@@ -7,7 +7,12 @@
 
 #include <avr/io.h>
 #include "../io/mcu_io.h"
+#include "../spi/spi.h"
 #include "../xbee/api_frame.h"
+#include "../xbee/xbee.h"
+
+// Debug mode
+#define _DEBUG    0
 
 
 // Following  SPI operation guidelines in XBee3 User Guide:
@@ -15,46 +20,51 @@
 void xbee_config_spi(void)
 {
 	// set reset to XBee as output and assert low
-	DDRD  |=  (1<<XBEE_RST_N);
-	PORTD &= ~(1<<XBEE_RST_N);
+	XBEE_RESET_OUT_EN;
+	XBEE_RESET_ASSERT;
 	
 	// set DOUT to XBee as output and assert low
-	DDRD  |=  (1<<XBEE_DOUT);
-	PORTD &= ~(1<<XBEE_DOUT);
+	XBEE_DOUT_OUT_EN;
+	XBEE_DOUT_LOW;
 	
 	// wait for ATTN_N to be asserted low
-	while ( (PINB & (1<<SPI_ATTN_N)) == SPI_ATTN_N );
+	while ( !SPI_ATTN_N_LOW );
 	
 	// set DOUT pin to input
-	DDRD  &=  ~(1<<XBEE_DOUT);
+	XBEE_DOUT_IN_EN;
 	
 	// release reset
-	PORTD |= (1<<XBEE_RST_N);
+	XBEE_RESET_RELEASE;
 }
 
 
 char* api_frame_decode(char *frame)
 {
+	// initialize local variables
 	int l_msg = 0;
 	int checksum = 0;
-	static char msg[64] = {};
+	static char msg[MAX_API_FRAME_SIZE] = {};
+	
 	// byte 1 is the start command
 	if (*frame == API_START)
 	{
-		// bytes 1 and 2 are length MSB and LSB
+		// bytes 1 and 2 are length MSB and LSB, combine and convert to integer
 		l_msg = ( (int) *(frame+API_L_MSB) << 8) + (int) *(frame+API_L_LSB);
 		
-		// calculate checksum
+		// calculate checksum: add every value in payload (excludes start word and length)
 		for (int i = 0; i <= l_msg; i ++)
 		{
 			checksum += *(frame+API_TYPE+i);
 		}
 		
+		// message is valid if LSB of checksum is 0xFF
 		if ( (0xFF & (checksum)) == 0xFF )
 		{
 		    // check frame type
 			switch ( *(frame+API_TYPE) )
 			{
+				/* Exclude unused frame types to decrease memory size */
+				#if _DEBUG
 				case XBEE_CMD:				return "Type:\tAT Command Frame\r\n";						break;
 				case XBEE_CMD_VALUE:		return "Type:\tAT Command-Queue Parameter Value Frame\r\n";	break;
 				case XBEE_XMIT_REQUEST:		return "Type:\tTransmit Request Frame\r\n";					break;
@@ -64,10 +74,13 @@ char* api_frame_decode(char *frame)
 				case XBEE_REG_JOINING_DEV:	return "Type:\tRegister Joining Device\r\n";				break;
 				case XBEE_BLE_UNLOCK_API:	return "Type:\tBLE Unlock API Frame\r\n";					break;
 				case XBEE_CMD_RESPONSE:		return "Type:\tAT Command Response Frame\r\n";				break;
+				#endif
 				
 				case XBEE_MODEM_STATUS:
 					switch ( *(frame+API_STATUS) )
 					{
+						/* Exclude unused status types to decrease memory size */
+						#if _DEBUG
 						case STATUS_HW_RST:         return "Modem:\tHardware reset\r\n";				break;
 						case STATUS_WDT_RST:        return "Modem:\tWatchdog timer reset\r\n";			break;
 						case STATUS_JOINED_NW:      return "Modem:\tJoined network\r\n";				break;
@@ -79,12 +92,17 @@ char* api_frame_decode(char *frame)
 						case STATUS_BLE_CONNECT:    return "Modem:\tBLE Connect\r\n";					break;
 						case STATUS_BLE_DISCONNECT: return "Modem:\tBLE Disconnect\r\n";				break;
 						case STATUS_STACK_ERROR:    return "Modem:\tStack error\r\n";					break;
+						#else
+						case STATUS_HW_RST:         return "rst";										break;
+						#endif
 					}
 					break;
 					
 				case XBEE_XMIT_STATUS:
 					switch( *(frame+API_XMIT_STATUS) )
 					{
+						/* Exclude unused status types to decrease memory size */
+						#if _DEBUG
 						case STATUS_SUCCESS:		return "Xmit:\tSuccessful\r\n";						break;
 						case STATUS_MAC_ACK_FAIL:	return "Xmit:\tMAC ACK Failure\r\n";				break;
 						case STATUS_CCA_FAIL:		return "Xmit:\tCCA Failure\r\n";					break;
@@ -102,6 +120,10 @@ char* api_frame_decode(char *frame)
 						case STATUS_LACK_OF_RSRC2:	return "Xmit:\tLack of free resources (2)";			break;
 						case STATUS_DATA_EXCEEDED:	return "Xmit:\tData payload too large";				break;
 						case STATUS_UNREQUESTED:	return "Xmit:\tIndirect message unrequested";		break;
+						#else
+						case STATUS_SUCCESS:		return "TX GOOD";									break;
+						#endif
+						default:					return "TX FAIL";									break;
 					}
 					break;
 				
@@ -116,11 +138,13 @@ char* api_frame_decode(char *frame)
 				case XBEE_RX_PKT:
 					for(int i = 0; i < l_msg; i++)
 					{
-						//*(msg+i) = *(frame+API_RCV_DATA+i);
+						msg[i] = *(frame+API_RCV_DATA+i);
 					}
 					return msg;
 					break;
-					
+				
+				/* Exclude unused frame types to decrease memory size */
+				#if _DEBUG
 				case XBEE_EXP_RX_INDICATOR: return "Type:\tExplicit RX Indicator Frame\r\n";			break;
 				case XBEE_IO_SAMPLE_RX:		return "Type:\tIO Data SAmple RX Indicator Frame\r\n";		break; 
 				case XBEE_NODE_ID:			return "Type:\tNode Identification Indicator Frame\r\n";	break;
@@ -131,16 +155,17 @@ char* api_frame_decode(char *frame)
 				case XBEE_MANY2ONE_ROUTE:	return "Type:\tMany-to-One Route Request Indicator\r\n";	break;
 				case XBEE_BLE_UNLOCK_RSP:	return "Type:\tBLE Unlock Response Frame\r\n";				break;
 				case XBEE_USER_DATA_RELAY:	return "Type:\tUser Data Relay Output\r\n";					break;
+				#endif
 					
-				default: return "WARNING: Unexpected frame type\r\n";
+				default: return "FRM BAD";	// unexpected frame type
 			}
 			
 		}
-		else { return "ERROR: invalid checksum\r\n"; }
+		else { return "CKS BAD"; }			// invalid checksum
 			
 	}
-	else { return "ERROR: invalid start\r\n"; }
+	else { return "STRT BAD"; }				// invalid start command
 		
-	return "ERROR\r\n";
+	return "ERROR";							// unexpected case
 	
 }

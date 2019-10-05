@@ -9,6 +9,8 @@
 #ifndef API_FRAME_H
 #define API_FRAME_H
 
+#define MAX_API_FRAME_SIZE 64
+
 #define API_START       0X7E
 #define API_L_MSB       1
 #define API_L_LSB       2

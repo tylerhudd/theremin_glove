@@ -5,10 +5,6 @@
  *  Author: tyler
  */ 
 
-#include <avr/io.h>
-#include "../io/mcu_io.h"
-#include "../spi/spi.h"
-#include "../xbee/api_frame.h"
 #include "../xbee/xbee.h"
 
 // Debug mode
@@ -20,21 +16,21 @@
 void xbee_config_spi(void)
 {
 	// set reset to XBee as output and assert low
-	XBEE_RESET_OUT_EN;
-	XBEE_RESET_ASSERT;
+	XBEE_RESET_OUT_EN();
+	XBEE_RESET_ASSERT();
 	
 	// set DOUT to XBee as output and assert low
-	XBEE_DOUT_OUT_EN;
-	XBEE_DOUT_LOW;
+	XBEE_DOUT_OUT_EN();
+	XBEE_DOUT_LOW();
 	
 	// wait for ATTN_N to be asserted low
 	while ( !SPI_ATTN_N_LOW );
 	
 	// set DOUT pin to input
-	XBEE_DOUT_IN_EN;
+	XBEE_DOUT_IN_EN();
 	
 	// release reset
-	XBEE_RESET_RELEASE;
+	XBEE_RESET_RELEASE();
 }
 
 
@@ -93,7 +89,7 @@ char* api_frame_decode(char *frame)
 						case STATUS_BLE_DISCONNECT: return "Modem:\tBLE Disconnect\r\n";				break;
 						case STATUS_STACK_ERROR:    return "Modem:\tStack error\r\n";					break;
 						#else
-						case STATUS_HW_RST:         return "rst";										break;
+						case STATUS_HW_RST:         return "RST";										break;
 						#endif
 					}
 					break;

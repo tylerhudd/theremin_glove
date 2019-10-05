@@ -9,16 +9,21 @@
 #ifndef XBEE_H_
 #define XBEE_H_
 
+#include <avr/io.h>
+#include "../io/mcu_io.h"
+#include "../spi/spi.h"
+#include "../xbee/api_frame.h"
+
 // XBee pin direction macros
-#define XBEE_RESET_OUT_EN  DDRD  |=  (1<<XBEE_RST_N)
-#define XBEE_DOUT_OUT_EN   DDRD  |=  (1<<XBEE_DOUT)
-#define XBEE_DOUT_IN_EN    DDRD  &= ~(1<<XBEE_DOUT)
+#define XBEE_RESET_OUT_EN()  DDRD  |=  (1<<XBEE_RST_N)
+#define XBEE_DOUT_OUT_EN()   DDRD  |=  (1<<XBEE_DOUT)
+#define XBEE_DOUT_IN_EN()    DDRD  &= ~(1<<XBEE_DOUT)
 
 // XBee pin set macros
-#define XBEE_RESET_ASSERT  PORTD &= ~(1<<XBEE_RST_N)
-#define XBEE_RESET_RELEASE PORTD |=  (1<<XBEE_RST_N)
-#define XBEE_DOUT_LOW      PORTD &= ~(1<<XBEE_DOUT)
-#define XBEE_DOUT_HIGH     PORTD |=  (1<<XBEE_DOUT)
+#define XBEE_RESET_ASSERT()  PORTD &= ~(1<<XBEE_RST_N)
+#define XBEE_RESET_RELEASE() PORTD |=  (1<<XBEE_RST_N)
+#define XBEE_DOUT_LOW()      PORTD &= ~(1<<XBEE_DOUT)
+#define XBEE_DOUT_HIGH()     PORTD |=  (1<<XBEE_DOUT)
 
 void xbee_config_spi(void);
 char* api_frame_decode(char *frame);

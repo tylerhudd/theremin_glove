@@ -6,14 +6,9 @@
  *
  */
 
-#include <avr/io.h>
-#include <string.h>
 #include "../spi/spi.h"
-#include "../io/mcu_io.h"
-#include "../xbee/api_frame.h"
 
-char    spi_miso_buf[64];
-char    c_prev_rd_data;
+char    spi_miso_buf[MAX_API_FRAME_SIZE];
 char    rd_data;
 uint8_t num_chars_rcv;   // number of characters received
 
@@ -22,37 +17,13 @@ uint8_t num_chars_rcv;   // number of characters received
 // Code modified from ATMega328 datasheet section 19
 void spi_master_init(void)
 {
-	// Set SS_N, MOSI, and SCK output, all others input
-	DDRB  = (1<<SPI_SS_N) | (1<<SPI_MOSI) | (1<<SPI_SCK);
+	SPI_PINS_EN();
 	
-	// set the SPI control register
-	//   - SPE  = 1 --> SPI  enabled
-	//   - MSTR = 1 --> SPI interface is in master mode
-	//   - SPR0 = 1 --> SCK frequency is fosc/16
-	SPCR  = (1<<SPE) | (1<<MSTR) | (1<<SPR0);
+	SPI_EN();
 	
 	// initialize global variables
-	c_prev_rd_data = 0xFF;
 	num_chars_rcv  = 0;
 }
-
-
-// SPI set slave select
-// This is not performed automatically by the ATMega328.  SS_N should be set low
-// during SPI transmission and set high when the transmission is complete.
-void spi_set_ss_n(uint8_t ss_n)
-{
-	// set the SS_N pin
-	if (ss_n == 1)
-	{
-		PORTB |= (1<<SPI_SS_N);
-	}
-	else
-	{
-		PORTB &= ~(1<<SPI_SS_N);
-	}
-}
-
 
 // SPI transmit char cData
 // Code modified from ATMega328 datasheet section 19
@@ -76,7 +47,6 @@ void spi_xmit(char cData)
 	
 }
 
-
 // SPI transmit string
 // This function consecutively transmits each character in a string
 void spi_xmit_string(char sData[])
@@ -84,14 +54,14 @@ void spi_xmit_string(char sData[])
 	int l_data = strlen(sData);
 	int i;
 	
-	spi_set_ss_n(0);
+	SPI_SS_N_ASSERT();
 	
 	for (i=0; i<l_data; i++)
 	{
 		spi_xmit(sData[i]);
 	}
 	
-	spi_set_ss_n(1);
+	SPI_SS_N_RELEASE();
 }
 
 // SPI transmit string in API frame format
@@ -113,9 +83,7 @@ void spi_xmit_api_string(char sData[])
 	char broad_radius  = 0x00;                      // max broadcast radius
 	char options       = 0x00;                      // no options used
 	
-	// assert slave select
-	spi_set_ss_n(0);
-	
+	SPI_SS_N_ASSERT();
 	
 	// transmit AT frames not counted in checksum
 	spi_xmit(API_START);
@@ -160,8 +128,7 @@ void spi_xmit_api_string(char sData[])
 	// transmit calculated checksum
 	spi_xmit(c_checksum);
 	
-	// deassert slave select
-	spi_set_ss_n(1);
+	SPI_SS_N_RELEASE();
 }
 
 char* spi_read(void)
@@ -169,11 +136,11 @@ char* spi_read(void)
 	int i = 0;
 	static char spi_msg[64] = {};
 	
-	spi_set_ss_n(0);
+	SPI_SS_N_ASSERT();
 	
 	num_chars_rcv = 0;
 	
-	for(i = 0; i<64 && SPI_ATTN_N_LOW; i++)
+	for(i = 0; i<MAX_API_FRAME_SIZE && SPI_ATTN_N_LOW; i++)
 	{
 		SPDR = 0xFF;
 		
@@ -190,7 +157,7 @@ char* spi_read(void)
 		}
 	}
 	
-	spi_set_ss_n(1);
+	SPI_SS_N_RELEASE();
 	
 	return spi_msg;
 }

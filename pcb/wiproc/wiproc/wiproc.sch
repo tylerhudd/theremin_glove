@@ -1,0 +1,365 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L MCU_Microchip_ATmega:ATmega328P-AU U?
+U 1 1 5DA52A25
+P 2600 3550
+F 0 "U?" H 2600 2500 50  0000 C CNN
+F 1 "ATmega328P-AU" H 2600 2400 50  0000 C CNN
+F 2 "Package_QFP:TQFP-32_7x7mm_P0.8mm" H 2600 3550 50  0001 C CIN
+F 3 "http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega328_P%20AVR%20MCU%20with%20picoPower%20Technology%20Data%20Sheet%2040001984A.pdf" H 2600 3550 50  0001 C CNN
+	1    2600 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3200 2650 5300 2650
+Wire Wire Line
+	3200 2750 4200 2750
+Wire Wire Line
+	3200 2850 4300 2850
+$Comp
+L Device:Crystal Y?
+U 1 1 5DA5B7A8
+P 5350 5350
+F 0 "Y?" H 5350 5082 50  0000 C CNN
+F 1 "Crystal" H 5350 5173 50  0000 C CNN
+F 2 "" H 5350 5350 50  0001 C CNN
+F 3 "~" H 5350 5350 50  0001 C CNN
+	1    5350 5350
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5DA5F971
+P 5200 5650
+F 0 "C?" H 5086 5696 50  0000 R CNN
+F 1 "C" H 5086 5605 50  0000 R CNN
+F 2 "" H 5238 5500 50  0001 C CNN
+F 3 "~" H 5200 5650 50  0001 C CNN
+	1    5200 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5DA61159
+P 5500 5650
+F 0 "C?" H 5615 5696 50  0000 L CNN
+F 1 "C" H 5615 5605 50  0000 L CNN
+F 2 "" H 5538 5500 50  0001 C CNN
+F 3 "~" H 5500 5650 50  0001 C CNN
+	1    5500 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5DA67C46
+P 5500 5950
+F 0 "#PWR?" H 5500 5700 50  0001 C CNN
+F 1 "GND" H 5505 5777 50  0000 C CNN
+F 2 "" H 5500 5950 50  0001 C CNN
+F 3 "" H 5500 5950 50  0001 C CNN
+	1    5500 5950
+	1    0    0    -1  
+$EndComp
+Text Label 3500 2450 0    50   ~ 0
+SPI_ATTN_N
+Text Label 3500 2550 0    50   ~ 0
+SPI_SS_N
+Text Label 3500 2850 0    50   ~ 0
+SPI_CLK
+Text Label 3500 2650 0    50   ~ 0
+SPI_MOSI
+Text Label 3500 2750 0    50   ~ 0
+SPI_MISO
+Text Label 3500 2950 0    50   ~ 0
+XTAL1_16MHZ
+Text Label 3500 3050 0    50   ~ 0
+XTAL2_16MHZ
+$Comp
+L Connector_Generic:Conn_02x03_Odd_Even J?
+U 1 1 5DA6D407
+P 4700 1850
+F 0 "J?" H 4750 2167 50  0000 C CNN
+F 1 "Conn_02x03_Odd_Even" H 4750 2076 50  0000 C CNN
+F 2 "" H 4700 1850 50  0001 C CNN
+F 3 "~" H 4700 1850 50  0001 C CNN
+	1    4700 1850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4500 1750 4200 1750
+Wire Wire Line
+	4200 1750 4200 2750
+Connection ~ 4200 2750
+Wire Wire Line
+	4500 1850 4300 1850
+Wire Wire Line
+	4300 1850 4300 2850
+Wire Wire Line
+	4500 1950 4400 1950
+Wire Wire Line
+	4400 1950 4400 3850
+Wire Wire Line
+	4400 3850 3200 3850
+Wire Wire Line
+	5000 1850 5300 1850
+Wire Wire Line
+	5300 1850 5300 2650
+Connection ~ 5300 2650
+$Comp
+L power:GND #PWR?
+U 1 1 5DA73178
+P 5100 2100
+F 0 "#PWR?" H 5100 1850 50  0001 C CNN
+F 1 "GND" H 5105 1927 50  0000 C CNN
+F 2 "" H 5100 2100 50  0001 C CNN
+F 3 "" H 5100 2100 50  0001 C CNN
+	1    5100 2100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5000 1950 5100 1950
+Wire Wire Line
+	5100 1950 5100 2100
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5DA7946A
+P 5300 1550
+F 0 "#PWR?" H 5300 1400 50  0001 C CNN
+F 1 "+3.3V" H 5315 1723 50  0000 C CNN
+F 2 "" H 5300 1550 50  0001 C CNN
+F 3 "" H 5300 1550 50  0001 C CNN
+	1    5300 1550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5300 1550 5300 1750
+Wire Wire Line
+	5300 1750 5000 1750
+Wire Wire Line
+	3200 2950 5500 2950
+Wire Wire Line
+	5500 5500 5500 5350
+Connection ~ 5500 5350
+Wire Wire Line
+	3200 3050 5200 3050
+Wire Wire Line
+	5200 5500 5200 5350
+Connection ~ 5200 5350
+Wire Wire Line
+	5200 5800 5200 5850
+Wire Wire Line
+	5200 5850 5500 5850
+Wire Wire Line
+	5500 5850 5500 5800
+Wire Wire Line
+	5500 5950 5500 5850
+Connection ~ 5500 5850
+Wire Wire Line
+	5500 2950 5500 5350
+Wire Wire Line
+	5200 3050 5200 5350
+Wire Wire Line
+	3200 4650 7100 4650
+Wire Wire Line
+	3200 2450 7000 2450
+Wire Wire Line
+	3200 2550 7000 2550
+Wire Wire Line
+	5300 2650 7000 2650
+Wire Wire Line
+	4200 2750 7000 2750
+Wire Wire Line
+	7000 2850 4300 2850
+Connection ~ 4300 2850
+Wire Wire Line
+	4400 4150 3200 4150
+Text Label 3550 4150 0    50   ~ 0
+UART_TX
+Wire Wire Line
+	4400 4050 3200 4050
+Text Label 3550 4050 0    50   ~ 0
+UART_RX
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5DA978B2
+P 2600 1550
+F 0 "#PWR?" H 2600 1400 50  0001 C CNN
+F 1 "+3.3V" H 2615 1723 50  0000 C CNN
+F 2 "" H 2600 1550 50  0001 C CNN
+F 3 "" H 2600 1550 50  0001 C CNN
+	1    2600 1550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2600 2050 2600 1950
+Wire Wire Line
+	2700 2050 2700 1950
+Wire Wire Line
+	2700 1950 2600 1950
+Connection ~ 2600 1950
+Wire Wire Line
+	2600 1950 2600 1550
+$Comp
+L power:GND #PWR?
+U 1 1 5DA99BC4
+P 2600 5300
+F 0 "#PWR?" H 2600 5050 50  0001 C CNN
+F 1 "GND" H 2605 5127 50  0000 C CNN
+F 2 "" H 2600 5300 50  0001 C CNN
+F 3 "" H 2600 5300 50  0001 C CNN
+	1    2600 5300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2600 5300 2600 5050
+$Comp
+L Interface_USB:FT231XS U?
+U 1 1 5DA9BBC8
+P 9000 2950
+F 0 "U?" H 9000 4031 50  0000 C CNN
+F 1 "FT231XS" H 9000 3940 50  0000 C CNN
+F 2 "Package_SO:SSOP-20_3.9x8.7mm_P0.635mm" H 9600 2000 50  0001 C CNN
+F 3 "http://www.ftdichip.com/Products/ICs/FT231X.html" H 9000 2950 50  0001 C CNN
+	1    9000 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector:USB_B_Micro J?
+U 1 1 5DA9E386
+P 1300 1350
+F 0 "J?" H 1357 1817 50  0000 C CNN
+F 1 "USB_B_Micro" H 1357 1726 50  0000 C CNN
+F 2 "" H 1450 1300 50  0001 C CNN
+F 3 "~" H 1450 1300 50  0001 C CNN
+	1    1300 1350
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5DA9FD04
+P 1300 1850
+F 0 "#PWR?" H 1300 1600 50  0001 C CNN
+F 1 "GND" H 1305 1677 50  0000 C CNN
+F 2 "" H 1300 1850 50  0001 C CNN
+F 3 "" H 1300 1850 50  0001 C CNN
+	1    1300 1850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1200 1750 1200 1800
+Wire Wire Line
+	1200 1800 1300 1800
+Wire Wire Line
+	1300 1800 1300 1850
+Wire Wire Line
+	1300 1750 1300 1800
+Connection ~ 1300 1800
+$Comp
+L power:+5V #PWR?
+U 1 1 5DAA2309
+P 1800 1000
+F 0 "#PWR?" H 1800 850 50  0001 C CNN
+F 1 "+5V" H 1815 1173 50  0000 C CNN
+F 2 "" H 1800 1000 50  0001 C CNN
+F 3 "" H 1800 1000 50  0001 C CNN
+	1    1800 1000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 1000 1800 1150
+Wire Wire Line
+	1800 1150 1600 1150
+Text Label 3550 3850 0    50   ~ 0
+MCU_RST_N
+$Comp
+L Connector:DIN-5 J?
+U 1 1 5DAA6DD2
+P 9800 4900
+F 0 "J?" H 9800 4625 50  0000 C CNN
+F 1 "DIN-5" H 9800 4534 50  0000 C CNN
+F 2 "" H 9800 4900 50  0001 C CNN
+F 3 "http://www.mouser.com/ds/2/18/40_c091_abd_e-75918.pdf" H 9800 4900 50  0001 C CNN
+	1    9800 4900
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xGxx:74LVC1G97 U?
+U 1 1 5DAA9B95
+P 8750 5700
+F 0 "U?" H 9000 6000 50  0000 C CNN
+F 1 "74LVC1G97" H 9050 5900 50  0000 C CNN
+F 2 "" H 8750 5700 50  0001 C CNN
+F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 8750 5700 50  0001 C CNN
+	1    8750 5700
+	1    0    0    -1  
+$EndComp
+$Comp
+L 74xGxx:74LVC1G97 U?
+U 1 1 5DAAA910
+P 8700 4600
+F 0 "U?" H 8950 4900 50  0000 C CNN
+F 1 "74LVC1G97" H 9000 4800 50  0000 C CNN
+F 2 "" H 8700 4600 50  0001 C CNN
+F 3 "http://www.ti.com/lit/sg/scyt129e/scyt129e.pdf" H 8700 4600 50  0001 C CNN
+	1    8700 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5DAACABD
+P 8700 4450
+F 0 "#PWR?" H 8700 4300 50  0001 C CNN
+F 1 "+3.3V" H 8715 4623 50  0000 C CNN
+F 2 "" H 8700 4450 50  0001 C CNN
+F 3 "" H 8700 4450 50  0001 C CNN
+	1    8700 4450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5DAAE8FF
+P 8700 4750
+F 0 "#PWR?" H 8700 4500 50  0001 C CNN
+F 1 "GND" H 8705 4577 50  0000 C CNN
+F 2 "" H 8700 4750 50  0001 C CNN
+F 3 "" H 8700 4750 50  0001 C CNN
+	1    8700 4750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5DAB0C5B
+P 8750 5850
+F 0 "#PWR?" H 8750 5600 50  0001 C CNN
+F 1 "GND" H 8755 5677 50  0000 C CNN
+F 2 "" H 8750 5850 50  0001 C CNN
+F 3 "" H 8750 5850 50  0001 C CNN
+	1    8750 5850
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5DAB2CF2
+P 8750 5550
+F 0 "#PWR?" H 8750 5400 50  0001 C CNN
+F 1 "+3.3V" H 8765 5723 50  0000 C CNN
+F 2 "" H 8750 5550 50  0001 C CNN
+F 3 "" H 8750 5550 50  0001 C CNN
+	1    8750 5550
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC

@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name conn_01x10_female_xbee)(type Legacy)(uri C:/school/Johns_Hopkins/07_EmbeddedSystems/git/pcb/symbols/conn_01x10_female_xbee.lib)(options "")(descr ""))
+  (lib (name ft231xs_3v3in)(type Legacy)(uri C:/school/Johns_Hopkins/07_EmbeddedSystems/git/pcb/symbols/ft231xs_3v3in.lib)(options "")(descr ""))
+)

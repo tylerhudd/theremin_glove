@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP TLV118
+D 200MHz, CMOS, Operational amplifier, with shutdown, SOT-23-6
+K operational amplifier opamp shutdown high-speed
+F http://www.ti.com/lit/ds/symlink/opa355.pdf
+$ENDCMP
+#
+#End Doc Library

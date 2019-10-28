@@ -1,0 +1,51 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP 4N26
+D DC Optocoupler Base Connected, Vce 30V, CTR 20%, Viso 1500V, DIP6
+K NPN DC Optocoupler Base Connected
+F https://www.vishay.com/docs/83725/4n25.pdf
+$ENDCMP
+#
+$CMP 4N27
+D DC Optocoupler Base Connected, Vce 30V, CTR 10%, Viso 2500V, DIP6
+K NPN DC Optocoupler Base Connected
+F https://www.vishay.com/docs/83725/4n25.pdf
+$ENDCMP
+#
+$CMP 4N28
+D DC Optocoupler Base Connected, Vce 30V, CTR 10%, Viso 2500V, DIP6
+K NPN DC Optocoupler Base Connected
+F https://www.vishay.com/docs/83725/4n25.pdf
+$ENDCMP
+#
+$CMP 4N35
+D Optocoupler, Phototransistor Output, with Base Connection, Vce 70V, CTR 100%, Viso 5000V, DIP6
+K NPN DC Optocoupler Base Connected
+F https://www.vishay.com/docs/81181/4n35.pdf
+$ENDCMP
+#
+$CMP 4N36
+D Optocoupler, Phototransistor Output, with Base Connection, Vce 70V, CTR 100%, Viso 5000V, DIP6
+K NPN DC Optocoupler Base Connected
+F https://www.vishay.com/docs/81181/4n35.pdf
+$ENDCMP
+#
+$CMP 4N37
+D Optocoupler, Phototransistor Output, with Base Connection, Vce 70V, CTR 100%, Viso 5000V, DIP6
+K NPN DC Optocoupler Base Connected
+F https://www.vishay.com/docs/81181/4n35.pdf
+$ENDCMP
+#
+$CMP FODM8071
+D DC Optocoupler Base Connected, Vce 30V, CTR 20%, Viso 2500V, DIP6
+K NPN DC Optocoupler Base Connected
+F https://www.vishay.com/docs/83725/4n25.pdf
+$ENDCMP
+#
+$CMP TIL111
+D DC Optocoupler, Phototransistor NPN, DIP6
+K NPN DC Optocoupler Base Connected
+F https://www.egr.msu.edu/eceshop/Parts_Inventory/datasheets/til111.pdf
+$ENDCMP
+#
+#End Doc Library

@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP AD5694R
+D Dual, 12-Bit nanoDAC+ with 2 ppm/°C Reference, I2C Interface, TSSOP-16
+K dac 2nch 12bit i2c
+F https://www.analog.com/media/en/technical-documentation/data-sheets/AD5697R.pdf
+$ENDCMP
+#
+#End Doc Library

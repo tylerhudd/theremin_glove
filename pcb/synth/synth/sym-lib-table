@@ -1,3 +1,6 @@
 (sym_lib_table
   (lib (name opa172idbvr)(type Legacy)(uri C:/school/Johns_Hopkins/07_EmbeddedSystems/git/pcb/symbols/opa172idbvr.lib)(options "")(descr ""))
+  (lib (name mux509)(type Legacy)(uri C:/school/Johns_Hopkins/07_EmbeddedSystems/git/pcb/symbols/mux509.lib)(options "")(descr ""))
+  (lib (name mux508)(type Legacy)(uri C:/school/Johns_Hopkins/07_EmbeddedSystems/git/pcb/symbols/mux508.lib)(options "")(descr ""))
+  (lib (name ad5694r)(type Legacy)(uri C:/school/Johns_Hopkins/07_EmbeddedSystems/git/pcb/symbols/ad5694r.lib)(options "")(descr ""))
 )

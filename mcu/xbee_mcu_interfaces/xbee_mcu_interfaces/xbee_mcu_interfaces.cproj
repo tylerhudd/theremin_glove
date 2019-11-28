@@ -120,6 +120,18 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\i2c\i2c.c">
+      <SubType>compile</SubType>
+      <Link>i2c.c</Link>
+    </Compile>
+    <Compile Include="..\..\i2c\i2c.h">
+      <SubType>compile</SubType>
+      <Link>i2c.h</Link>
+    </Compile>
+    <Compile Include="..\..\i2c\LSM6DS3.h">
+      <SubType>compile</SubType>
+      <Link>LSM6DS3.h</Link>
+    </Compile>
     <Compile Include="..\..\io\mcu_io.h">
       <SubType>compile</SubType>
       <Link>mcu_io.h</Link>

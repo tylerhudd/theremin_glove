@@ -1,4 +1,4 @@
-spi.d spi.o: ../../../spi/spi.c \
+spi.d spi.o: ../../../spi/spi.c ../../../spi/../spi/spi.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\sfr_defs.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\inttypes.h \
@@ -12,8 +12,10 @@ spi.d spi.o: ../../../spi/spi.c \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\lock.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
- ../../../spi/../spi/spi.h ../../../spi/../io/mcu_io.h \
- ../../../spi/../xbee/api_frame.h
+ ../../../spi/../spi/../io/mcu_io.h \
+ ../../../spi/../spi/../xbee/api_frame.h
+
+../../../spi/../spi/spi.h:
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -41,8 +43,6 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h:
 
-../../../spi/../spi/spi.h:
+../../../spi/../spi/../io/mcu_io.h:
 
-../../../spi/../io/mcu_io.h:
-
-../../../spi/../xbee/api_frame.h:
+../../../spi/../spi/../xbee/api_frame.h:

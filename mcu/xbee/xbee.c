@@ -6,6 +6,7 @@
  */ 
 
 #include "../xbee/xbee.h"
+#include "../uart/uart.h"
 
 // Debug mode
 #define _DEBUG    0
@@ -24,7 +25,7 @@ void xbee_config_spi(void)
 	XBEE_DOUT_LOW();
 	
 	// wait for ATTN_N to be asserted low
-	while ( !SPI_ATTN_N_LOW );
+	while ( !SPI_ATTN_N_LOW );  
 	
 	// set DOUT pin to input
 	XBEE_DOUT_IN_EN();

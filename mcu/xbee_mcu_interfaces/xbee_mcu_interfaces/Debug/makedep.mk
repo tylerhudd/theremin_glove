@@ -2,6 +2,8 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+..\..\i2c\i2c.c
+
 ..\..\spi\spi.c
 
 ..\..\uart\uart.c

@@ -20,14 +20,13 @@
 
 /* Probably already defined somewhere else. Define here, if isn't. */
 #ifndef FOSC
-#define	FOSC			16000000UL
+#define	FOSC			2000000UL
 #endif
 
 /* Settings */
 #define _BAUD			9600					// Baud rate (9600 is default)
-#define _DATA			0x03					// Number of data bits in frame = byte tranmission
-//#define _UBRR			(FOSC/16)/_BAUD - 1		// Used for UBRRL and UBRRH
-#define _UBRR           25 // baud = 2400, fosc = 1M
+#define _DATA			0x03					// Number of data bits in frame = byte transmission
+#define _UBRR			(FOSC/16)/_BAUD - 1		// Used for UBRRL and UBRRH
 
 #define RX_BUFF			10
 

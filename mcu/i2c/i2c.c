@@ -61,6 +61,15 @@ uint8_t i2c_get_status(void)
 	return status;
 }
 
+// write one byte without address byte to i2c bus
+void i2c_write_byte_no_addr(uint8_t device, uint8_t data)
+{
+	i2c_start_cmd();
+	i2c_write( (device<<1) );
+	i2c_write(data);
+	i2c_stop_cmd();
+}
+
 // write one byte to i2c bus
 void i2c_write_byte(uint8_t device, uint8_t addr, uint8_t data)
 {
@@ -68,6 +77,17 @@ void i2c_write_byte(uint8_t device, uint8_t addr, uint8_t data)
 	i2c_write( (device<<1) );
 	i2c_write(addr);
 	i2c_write(data);
+	i2c_stop_cmd();
+}
+
+// write two bytes to i2c bus
+void i2c_write_two(uint8_t device, uint_t addr, uint8_t data1, uint8_t data2)
+{
+	i2c_start_cmd();
+	i2c_write( (device<<1) );
+	i2c_write(addr);
+	i2c_write(data1);
+	i2c_write(data2);
 	i2c_stop_cmd();
 }
 

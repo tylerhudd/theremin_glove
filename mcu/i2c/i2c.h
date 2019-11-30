@@ -35,8 +35,14 @@ uint8_t i2c_read_nack(void);
 // read i2c status register
 uint8_t i2c_get_status(void);
 
+// write one byte without address byte to i2c bus
+void i2c_write_byte_no_addr(uint8_t device, uint8_t data);
+
 // write one byte to i2c bus
 void i2c_write_byte(uint8_t device, uint8_t addr, uint8_t data);
+
+// write two bytes to i2c bus
+void i2c_write_two(uint8_t device, uint8_t addr, uint8_t data1, uint8_t data2);
 
 // read one byte from i2c bus
 uint8_t i2c_read_byte(uint8_t device, uint8_t addr);

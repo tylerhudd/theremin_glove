@@ -5,38 +5,56 @@
  * Author : tyler
  */ 
 
+/****** COMPILER VARIABLES ******/
+#define _ECHO    0
+#define _GLOVE   1
+
+/****** GLOBAL DEFINITIONS ******/
+// 2 MHz clock - 16 MHz external crystal w/ divide by 8 fuse enabled
 #define F_CPU 2000000UL
-#define UBRR  F_CPU/16/BAUD-1
 
-#define LED_OUT_EN()  DDRD  |=  (1<<LED0)|(1<<LED1)
-#define BTN_IN_EN()   DDRC  &= ~(1<<BTN0)|(1<<BTN1)
+#if _GLOVE
+	#define UBRR  F_CPU/16/BAUD-1
+#endif
 
-#define LED0_ON()  PORTD &= ~(1<<LED0)
-#define LED0_OFF() PORTD |=  (1<<LED0)
-#define LED1_ON()  PORTD &= ~(1<<LED1)
-#define LED1_OFF() PORTD |=  (1<<LED1)
-
-#define BTN0_PRESSED !(PINC & (1<<BTN0))
-#define BTN1_PRESSED !(PINC & (1<<BTN1))
-
+/****** INCLUDE FILES ******/
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <string.h>
-#include "../../uart/uart.h"
 #include "../../spi/spi.h"
 #include "../../xbee/xbee.h"
 #include "../../xbee/api_frame.h"
 #include "../../i2c/i2c.h"
-#include "../../i2c/LSM6DS3.h"
 #include "../../io/mcu_io.h"
 
-#define _ECHO    0
+#if _GLOVE
+	#include "../../i2c/LSM6DS3.h"
+	#include "../../io/adc.h"
+#else
+	#include "../../uart/uart.h"
+	#include "../../i2c/AD5694.h"
+	#include "../../i2c/PCF8574.h"
+#endif
 
-char spi_miso_buf[MAX_API_FRAME_SIZE];
-int  toggle_led0 = 0;
-int  toggle_led1 = 0;
+/***** GLOBAL VARIABLES ******/
+int   btn0_flag     = 0;
+int   btn1_flag     = 0;
+int   btn2_flag     = 0;
+int   btn3_flag     = 0;
+int   new_data_flag = 0;
 
+#if _GLOVE
+	char  xmit_data[15] = {0};
+#else
+	char  spi_miso_buf[MAX_API_FRAME_SIZE];
+	char  sns_data[15] = {0};
+#endif
+
+/***** INTERRUPTS *****/
+#if _GLOVE
+// enable UART RX interrupt
+#else
 ISR(USART_RX_vect)
 {
 	char rxdata = (char)getByte();
@@ -47,42 +65,24 @@ ISR(USART_RX_vect)
 		putByte(rxdata);	// echo in terminal
 	#endif
 }
+#endif
 
+// enable button push interrupts
 ISR(PCINT1_vect) {
-	
-	if (BTN0_PRESSED)  { toggle_led0 = 1;  }
-		
-	if (BTN1_PRESSED)  { toggle_led1 = 1;  }
-		
+	if (BTN0_PRESSED)  { btn0_flag = 1; }
+	if (BTN1_PRESSED)  { btn1_flag = 1; }
+	if (BTN2_PRESSED)  { btn2_flag = 1; }
+	if (BTN3_PRESSED)  { btn3_flag = 1; }
 	_delay_ms(100);  // debounce delay
 }
 
+/****** FUNCTION DECLARATIONS *****/
+void config_io(void);
+
+/****** MAIN FUNCTION ******/
 int main(void)
 {
-	// enable all interrupts
-	sei();
-	
-	// enable uart interrupt
-	RX_INTEN();
-	
-	// initialize UART interface
-	initUART();
-	
-    // initialize SPI as master
-	spi_master_init();
-	
-	// configure XBee to SPI mode
-	xbee_config_spi();
-	
-	// initialize i2c interface
-	i2c_master_init();
-	
-	LED_OUT_EN();
-	BTN_IN_EN();
-	
-	// pin change interrupt enable
-	PCICR |= (1<<PCIE1);
-	PCMSK1 |= (1<<PCINT8)|(1<<PCINT9);
+	config_io();
 	
     while (1) 
     {
@@ -93,27 +93,142 @@ int main(void)
 	 		
 	 		if (strcmp(spi_rxdata, "TX GOOD") != 0)
 	 		{
-		 		writeString(spi_rxdata);
+		 		new_data_flag = 1;
+				 #if _GLOVE
+					
+				 #else
+		 			switch (spi_rxdata[0])
+					{
+						//case '0':	strcpy(sns_data,spi_rxdata);	break;
+						case '0':
+							for(uint8_t i=0; i<15; i++)
+							{
+								sns_data[i] = spi_rxdata[i];
+							}
+							break;
+						default:		break;
+					}
+				 #endif
 	 		}
  		}
  		
-		if (toggle_led0)
+		if (btn0_flag)
 		{
 			PORTD ^= (1<<LED0);
-			toggle_led0 = 0;
-			putByte(i2c_read_byte(LSM6DS3_ADDR, LSM6DS3_ID));
+			btn0_flag = 0;
 		}
 		
-		if (toggle_led1)
+		if (btn1_flag)
 		{
 			PORTD ^= (1<<LED1);
-			toggle_led1 = 0;
-			putByte(65);
+			btn1_flag = 0;
 		}
 		
-		_delay_ms(1);
+		if (btn2_flag)
+		{
+			PORTD ^= (1<<LED0);
+			btn2_flag = 0;
+		}
+		
+		if (btn3_flag)
+		{
+			PORTD ^= (1<<LED1);
+			btn3_flag = 0;
+		}
+		
+		#if _GLOVE
+			char* ag_data       = read_gyroacc();
+			// set type of transmission byte (ASCII 0 = sensor data)
+			xmit_data[0] = '0';
+ 			// place accelerometer and gyroscope data into transmit data buffer
+ 			for (uint8_t i = 0; i < 12; i++)
+ 			{
+ 				xmit_data[i+1] = ag_data[i];
+ 			}
+ 			// read and store flex sensor
+ 			ADC_STRT();
+ 			while( ADCSRA & (1<<ADSC) );
+ 			xmit_data[14] = ADC>>8;
+ 			xmit_data[13] = ADC & 0xFF;
+ 			// transmit sensor data
+ 			spi_xmit_api_string(xmit_data);
+		#else
+			if (new_data_flag)
+			{
+				int16_t g_x      = ( (sns_data[ 2]<<8) | sns_data[ 1]);
+				int16_t g_y      = ( (sns_data[ 4]<<8) | sns_data[ 3]);
+				int16_t g_z      = ( (sns_data[ 6]<<8) | sns_data[ 5]);
+				int16_t a_x      = ( (sns_data[ 8]<<8) | sns_data[ 7]);
+				int16_t a_y      = ( (sns_data[10]<<8) | sns_data[ 9]);
+				int16_t a_z      = ( (sns_data[12]<<8) | sns_data[11]);
+				int16_t adc_data = ( (sns_data[14]<<8) | sns_data[13]);
+				
+				writeString("GX: ");
+				writeNum(g_x);
+				writeString("\t\tGY: ");
+				writeNum(g_y);
+				writeString("\t\tGZ: ");
+				writeNum(g_z);
+				writeString("\t\tAX: ");
+				writeNum(a_x);
+				writeString("\t\tAY: ");
+				writeNum(a_y);
+				writeString("\t\tAZ: ");
+				writeNum(a_z);
+				writeString("\t\tADC: ");
+				writeNum(adc_data);
+				writeString("\r\n");
+				
+				new_data_flag = 0;
+			}
+		#endif
+	
+		#if _GLOVE
+			_delay_ms(50);
+		#else
+			_delay_ms(1);
+		#endif
     }
 	
 	return 0;
 }
 
+
+void config_io(void)
+{
+	// enable all interrupts
+	sei();
+
+	// initialize SPI as master
+	spi_master_init();
+	// configure XBee to SPI mode
+	xbee_config_spi();
+	// initialize i2c interface
+	i2c_master_init();
+	// enable LED and button IO and interrupts
+	LED_OUT_EN();
+	BTN_IN_EN();
+	BTN_INT_EN();
+	BTN_INTMSK();
+
+	#if _GLOVE
+		// configure 6DoF
+		LSM6DS3_init();
+		// enable ADC
+		ADC_IN1_SEL();
+		ADC_EN();
+	#else
+		// enable uart interrupt
+		RX_INTEN();
+		// initialize UART interface
+		initUART();
+		// set LOAD DAC signal
+		LDAC_OUT_EN();
+		LDAC_N_ON();
+		i2c_write_byte_no_addr(PCF8574A_ADDR, (WF_SIN | FLT_DIR) );
+		i2c_write_two(AD5694_ADDR, DAC_PWR,                 0x00, 0x00);
+		i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCO), 0x20, 0x80);
+		i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCF), 0x08, 0x80);
+		i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCA), 0x20, 0x80);
+	#endif
+}

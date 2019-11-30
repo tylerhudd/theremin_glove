@@ -80,6 +80,30 @@ void writeString(char *str)
 	}
 }
 
+/* convert an nteger to ascii characters and write to TX buffer */
+void writeNum(int16_t num)
+{
+	uint8_t  zero_flag = 0;
+	int16_t val       = 0;
+	
+	if (num < 0)
+	{
+		putByte('-');
+		num *= -1;
+	}
+	
+	for(int16_t comp=10000; comp > 0; comp/=10)
+	{
+		val  = num/comp;
+		if ( (val != 0) || (zero_flag == 1) )
+		{
+			zero_flag = 1;
+			putByte('0'+ (val&0xFF) );
+			num -= val*comp;
+		}
+	}
+}
+
 const char* readString(void)
 {
 	char rxstr[RX_BUFF];

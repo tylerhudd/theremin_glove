@@ -120,6 +120,10 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\i2c\AD5694.h">
+      <SubType>compile</SubType>
+      <Link>AD5694.h</Link>
+    </Compile>
     <Compile Include="..\..\i2c\i2c.c">
       <SubType>compile</SubType>
       <Link>i2c.c</Link>
@@ -128,9 +132,21 @@
       <SubType>compile</SubType>
       <Link>i2c.h</Link>
     </Compile>
+    <Compile Include="..\..\i2c\LSM6DS3.c">
+      <SubType>compile</SubType>
+      <Link>LSM6DS3.c</Link>
+    </Compile>
     <Compile Include="..\..\i2c\LSM6DS3.h">
       <SubType>compile</SubType>
       <Link>LSM6DS3.h</Link>
+    </Compile>
+    <Compile Include="..\..\i2c\PCF8574.h">
+      <SubType>compile</SubType>
+      <Link>PCF8574.h</Link>
+    </Compile>
+    <Compile Include="..\..\io\adc.h">
+      <SubType>compile</SubType>
+      <Link>adc.h</Link>
     </Compile>
     <Compile Include="..\..\io\mcu_io.h">
       <SubType>compile</SubType>

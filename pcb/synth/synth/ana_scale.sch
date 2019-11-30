@@ -441,4 +441,14 @@ Wire Wire Line
 Connection ~ 7300 4000
 Text HLabel 8150 4000 2    50   Output ~ 0
 AN_SCALED_OUT
+Wire Notes Line
+	5150 3600 5150 4400
+Wire Notes Line
+	5150 4400 4750 4400
+Wire Notes Line
+	4750 4400 4750 3600
+Wire Notes Line
+	4750 3600 5150 3600
+Text Notes 4650 3550 0    50   ~ 0
+R54 needs to go to pin 9 and R57 to pin 10
 $EndSCHEMATC

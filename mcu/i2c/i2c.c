@@ -81,7 +81,7 @@ void i2c_write_byte(uint8_t device, uint8_t addr, uint8_t data)
 }
 
 // write two bytes to i2c bus
-void i2c_write_two(uint8_t device, uint_t addr, uint8_t data1, uint8_t data2)
+void i2c_write_two(uint8_t device, uint8_t addr, uint8_t data1, uint8_t data2)
 {
 	i2c_start_cmd();
 	i2c_write( (device<<1) );

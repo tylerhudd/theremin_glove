@@ -48,6 +48,7 @@ void initUART(void);
 uint8_t getByte(void);
 void putByte(unsigned char data);
 void writeString(char *str);
+void writeNum(int16_t num);
 const char* readString(void);
 
 #endif /* UART_H_ */

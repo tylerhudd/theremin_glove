@@ -1290,7 +1290,7 @@ $EndComp
 Wire Wire Line
 	6600 4800 6600 4750
 Wire Wire Line
-	6250 5000 6400 5000
+	6250 5000 6300 5000
 Wire Wire Line
 	6250 5200 6250 5750
 Wire Wire Line
@@ -1642,4 +1642,47 @@ NoConn ~ 2450 2850
 NoConn ~ 3900 2850
 NoConn ~ 4550 4900
 NoConn ~ 7950 5000
+$Comp
+L Device:R_US R?
+U 1 1 5DE4EB04
+P 6300 4500
+F 0 "R?" H 6232 4454 50  0000 R CNN
+F 1 "470k" H 6232 4545 50  0000 R CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 6340 4490 50  0001 C CNN
+F 3 "~" H 6300 4500 50  0001 C CNN
+	1    6300 4500
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	6300 4650 6300 5000
+Connection ~ 6300 5000
+Wire Wire Line
+	6300 5000 6400 5000
+$Comp
+L power:GND #PWR?
+U 1 1 5DE6E779
+P 6600 4200
+F 0 "#PWR?" H 6600 3950 50  0001 C CNN
+F 1 "GND" H 6605 4027 50  0000 C CNN
+F 2 "" H 6600 4200 50  0001 C CNN
+F 3 "" H 6600 4200 50  0001 C CNN
+	1    6600 4200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6600 4200 6600 4150
+Wire Wire Line
+	6600 4150 6300 4150
+Wire Wire Line
+	6300 4150 6300 4350
+Wire Notes Line
+	6400 4300 5950 4300
+Wire Notes Line
+	5950 4300 5950 4700
+Wire Notes Line
+	5950 4700 6400 4700
+Wire Notes Line
+	6400 4700 6400 4300
+Text Notes 5050 4250 0    50   ~ 0
+add to v2 for reference to gnd
 $EndSCHEMATC

@@ -4,6 +4,8 @@
 
 ..\..\i2c\i2c.c
 
+..\..\i2c\LSM6DS3.c
+
 ..\..\spi\spi.c
 
 ..\..\uart\uart.c

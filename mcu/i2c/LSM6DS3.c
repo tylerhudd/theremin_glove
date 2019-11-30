@@ -5,10 +5,25 @@
 
 #include "../i2c/LSM6DS3.h"
 
-// read 6DoF temperature
-uint8_t* read_temp(void)
+void LSM6DS3_init(void)
 {
-	uint8_t temp[2] = {0};
+	// set accelerometer and gyroscope to no decimation
+	i2c_write_byte(LSM6DS3_ADDR, FIFO_CTRL3, 0x09);
+	// set fourth fifo to no decimation
+	i2c_write_byte(LSM6DS3_ADDR, FIFO_CTRL4, 0x09);
+	// configure accelerometer ODR 13Hz
+	i2c_write_byte(LSM6DS3_ADDR, CTRL1_XL, 0x10);
+	// configure gyroscope ODR 13Hz
+	i2c_write_byte(LSM6DS3_ADDR, CTRL2_G, 0x10);
+	
+	
+	i2c_write_byte(LSM6DS3_ADDR, CTRL4_C, FIFO_TEMP_EN);
+}
+
+// read 6DoF temperature
+char* read_temp(void)
+{
+	static char temp[2] = {0};
 	
 	i2c_start_cmd();
 	i2c_write( (LSM6DS3_ADDR<<1) );
@@ -23,9 +38,9 @@ uint8_t* read_temp(void)
 }
 
 // read 6DoF gyroscope
-uint8_t* read_gyro(void)
+char* read_gyro(void)
 {
-	uint8_t gyro[6] = {0};
+	static char gyro[6] = {0};
 	
 	i2c_start_cmd();
 	i2c_write( (LSM6DS3_ADDR<<1) );
@@ -44,9 +59,9 @@ uint8_t* read_gyro(void)
 }
 
 // read 6DoF accelerometer
-uint8_t* read_acc(void)
+char* read_acc(void)
 {
-	uint8_t acc[6] = {0};
+	static char acc[6] = {0};
 	
 	i2c_start_cmd();
 	i2c_write( (LSM6DS3_ADDR<<1) );
@@ -65,9 +80,9 @@ uint8_t* read_acc(void)
 }
 
 // read 6DoF gyroscope and acceleroemter
-uint8_t* read_gyroacc(void)
+char* read_gyroacc(void)
 {
-	uint8_t data[12] = {0};
+	static char data[12] = {0};
 	
 	i2c_start_cmd();
 	i2c_write( (LSM6DS3_ADDR<<1) );

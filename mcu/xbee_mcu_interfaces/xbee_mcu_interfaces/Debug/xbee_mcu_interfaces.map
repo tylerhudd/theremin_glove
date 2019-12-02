@@ -27,33 +27,58 @@ Discarded input sections
  .text          0x00000000        0x0 i2c.o
  .data          0x00000000        0x0 i2c.o
  .bss           0x00000000        0x0 i2c.o
+ .text.i2c_stop_cmd
+                0x00000000        0x8 i2c.o
+ .text.i2c_read_ack
+                0x00000000       0x16 i2c.o
+ .text.i2c_read_nack
+                0x00000000       0x16 i2c.o
  .text.i2c_get_status
                 0x00000000        0x8 i2c.o
- .text.i2c_write_byte_no_addr
-                0x00000000       0x26 i2c.o
- .text.i2c_write_two
-                0x00000000       0x3e i2c.o
+ .text.i2c_write_byte
+                0x00000000       0x32 i2c.o
  .text.i2c_read_byte
                 0x00000000       0x38 i2c.o
  .text          0x00000000        0x0 LSM6DS3.o
  .data          0x00000000        0x0 LSM6DS3.o
  .bss           0x00000000        0x0 LSM6DS3.o
+ .text.LSM6DS3_init
+                0x00000000       0x34 LSM6DS3.o
  .text.read_temp
                 0x00000000       0x3a LSM6DS3.o
  .text.read_gyro
                 0x00000000       0x52 LSM6DS3.o
  .text.read_acc
                 0x00000000       0x52 LSM6DS3.o
+ .text.read_gyroacc
+                0x00000000       0x76 LSM6DS3.o
+ .bss.data.1791
+                0x00000000        0xc LSM6DS3.o
  .bss.acc.1787  0x00000000        0x6 LSM6DS3.o
  .bss.gyro.1783
                 0x00000000        0x6 LSM6DS3.o
  .bss.temp.1779
                 0x00000000        0x2 LSM6DS3.o
+ .debug_info    0x00000000      0x4a7 LSM6DS3.o
+ .debug_abbrev  0x00000000       0xdc LSM6DS3.o
+ .debug_loc     0x00000000       0xbc LSM6DS3.o
+ .debug_aranges
+                0x00000000       0x40 LSM6DS3.o
+ .debug_ranges  0x00000000       0x30 LSM6DS3.o
+ .debug_line    0x00000000      0x209 LSM6DS3.o
+ .debug_str     0x00000000      0x22d LSM6DS3.o
+ .comment       0x00000000       0x31 LSM6DS3.o
+ .debug_frame   0x00000000       0x94 LSM6DS3.o
  .text          0x00000000        0x0 spi.o
  .data          0x00000000        0x0 spi.o
  .bss           0x00000000        0x0 spi.o
+ .text.spi_xmit
+                0x00000000       0x30 spi.o
  .text.spi_xmit_string
                 0x00000000       0x3e spi.o
+ .rodata        0x00000000        0x8 spi.o
+ .text.spi_xmit_api_string
+                0x00000000      0x11e spi.o
  .text          0x00000000        0x0 uart.o
  .data          0x00000000        0x0 uart.o
  .bss           0x00000000        0x0 uart.o
@@ -83,6 +108,9 @@ Discarded input sections
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
+ .data.vco_ctrl
+                0x00000000        0x2 main.o
+ .bss.prev_z    0x00000000        0x2 main.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_divmodhi4.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_divmodhi4.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_divmodhi4.o)
@@ -296,7 +324,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x67a
+.text           0x00000000      0x4fc
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -388,61 +416,43 @@ END GROUP
  .text.i2c_start_cmd
                 0x000000b8       0x12 i2c.o
                 0x000000b8                i2c_start_cmd
- .text.i2c_stop_cmd
-                0x000000ca        0x8 i2c.o
-                0x000000ca                i2c_stop_cmd
  .text.i2c_write
-                0x000000d2       0x16 i2c.o
-                0x000000d2                i2c_write
- .text.i2c_read_ack
-                0x000000e8       0x16 i2c.o
-                0x000000e8                i2c_read_ack
- .text.i2c_read_nack
-                0x000000fe       0x16 i2c.o
-                0x000000fe                i2c_read_nack
- .text.i2c_write_byte
-                0x00000114       0x32 i2c.o
-                0x00000114                i2c_write_byte
- .text.LSM6DS3_init
-                0x00000146       0x34 LSM6DS3.o
-                0x00000146                LSM6DS3_init
- .text.read_gyroacc
-                0x0000017a       0x76 LSM6DS3.o
-                0x0000017a                read_gyroacc
+                0x000000ca       0x16 i2c.o
+                0x000000ca                i2c_write
+ .text.i2c_write_byte_no_addr
+                0x000000e0       0x26 i2c.o
+                0x000000e0                i2c_write_byte_no_addr
+ .text.i2c_write_two
+                0x00000106       0x3e i2c.o
+                0x00000106                i2c_write_two
  .text.spi_master_init
-                0x000001f0        0xe spi.o
-                0x000001f0                spi_master_init
- .text.spi_xmit
-                0x000001fe       0x30 spi.o
-                0x000001fe                spi_xmit
- .text.spi_xmit_api_string
-                0x0000022e      0x11e spi.o
-                0x0000022e                spi_xmit_api_string
+                0x00000144        0xe spi.o
+                0x00000144                spi_master_init
  .text.spi_read
-                0x0000034c       0x50 spi.o
-                0x0000034c                spi_read
+                0x00000152       0x50 spi.o
+                0x00000152                spi_read
  .text.xbee_config_spi
-                0x0000039c       0x12 xbee.o
-                0x0000039c                xbee_config_spi
+                0x000001a2       0x12 xbee.o
+                0x000001a2                xbee_config_spi
  .text.api_frame_decode
-                0x000003ae       0xfa xbee.o
-                0x000003ae                api_frame_decode
+                0x000001b4       0xfa xbee.o
+                0x000001b4                api_frame_decode
  .text.__vector_4
-                0x000004a8       0x68 main.o
-                0x000004a8                __vector_4
+                0x000002ae       0x50 main.o
+                0x000002ae                __vector_4
  .text.config_io
-                0x00000510       0x44 main.o
-                0x00000510                config_io
- .text.main     0x00000554      0x110 main.o
-                0x00000554                main
+                0x000002fe       0x68 main.o
+                0x000002fe                config_io
+ .text.main     0x00000366      0x180 main.o
+                0x00000366                main
  .text.avr-libc
-                0x00000664       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strcmp.o)
-                0x00000664                strcmp
-                0x00000676                . = ALIGN (0x2)
+                0x000004e6       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strcmp.o)
+                0x000004e6                strcmp
+                0x000004f8                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000676        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x00000676                _exit
-                0x00000676                exit
+ .fini9         0x000004f8        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x000004f8                _exit
+                0x000004f8                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -461,69 +471,74 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000676        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x000004f8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x0000067a                _etext = .
+                0x000004fc                _etext = .
 
-.data           0x00800100       0x3c load address 0x0000067a
+.data           0x00800100       0x34 load address 0x000004fc
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
  *(.gnu.linkonce.d*)
  *(.rodata)
- .rodata        0x00800100        0x8 spi.o
  *(.rodata*)
  .rodata.str1.1
-                0x00800108       0x33 xbee.o
+                0x00800100       0x33 xbee.o
  .rodata.str1.1
-                0x0080013b        0x8 main.o
+                0x00800133        0x8 main.o
  *(.gnu.linkonce.r*)
-                0x00800144                . = ALIGN (0x2)
- *fill*         0x0080013b        0x1 
-                0x0080013c                _edata = .
-                0x0080013c                PROVIDE (__data_end, .)
+                0x0080013c                . = ALIGN (0x2)
+ *fill*         0x00800133        0x1 
+                0x00800134                _edata = .
+                0x00800134                PROVIDE (__data_end, .)
 
-.bss            0x0080013c       0xe7
-                0x0080013c                PROVIDE (__bss_start, .)
+.bss            0x00800134       0xda
+                0x00800134                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.data.1791
-                0x0080013c        0xc LSM6DS3.o
  .bss.spi_msg.1799
-                0x00800148       0x40 spi.o
- .bss.msg.1777  0x00800188       0x40 xbee.o
- .bss.xmit_data
-                0x008001c8        0xf main.o
-                0x008001c8                xmit_data
+                0x00800134       0x40 spi.o
+ .bss.msg.1777  0x00800174       0x40 xbee.o
+ .bss.sns_data  0x008001b4        0xf main.o
+                0x008001b4                sns_data
+ .bss.audio_on  0x008001c3        0x1 main.o
+                0x008001c3                audio_on
+ .bss.waveform  0x008001c4        0x1 main.o
+                0x008001c4                waveform
+ .bss.rcv_btn   0x008001c5        0x1 main.o
+                0x008001c5                rcv_btn
+ .bss.rcv_btn_flag
+                0x008001c6        0x1 main.o
+                0x008001c6                rcv_btn_flag
  .bss.new_data_flag
-                0x008001d7        0x2 main.o
-                0x008001d7                new_data_flag
+                0x008001c7        0x1 main.o
+                0x008001c7                new_data_flag
  .bss.btn3_flag
-                0x008001d9        0x2 main.o
-                0x008001d9                btn3_flag
+                0x008001c8        0x1 main.o
+                0x008001c8                btn3_flag
  .bss.btn2_flag
-                0x008001db        0x2 main.o
-                0x008001db                btn2_flag
+                0x008001c9        0x1 main.o
+                0x008001c9                btn2_flag
  .bss.btn1_flag
-                0x008001dd        0x2 main.o
-                0x008001dd                btn1_flag
+                0x008001ca        0x1 main.o
+                0x008001ca                btn1_flag
  .bss.btn0_flag
-                0x008001df        0x2 main.o
-                0x008001df                btn0_flag
+                0x008001cb        0x1 main.o
+                0x008001cb                btn0_flag
  *(COMMON)
- COMMON         0x008001e1       0x42 spi.o
-                0x008001e1                spi_miso_buf
-                0x00800221                rd_data
-                0x00800222                num_chars_rcv
-                0x00800223                PROVIDE (__bss_end, .)
-                0x0000067a                __data_load_start = LOADADDR (.data)
-                0x000006b6                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x008001cc       0x42 spi.o
+                0x008001cc                spi_miso_buf
+                0x0080020c                rd_data
+                0x0080020d                num_chars_rcv
+                0x0080020e                PROVIDE (__bss_end, .)
+                0x000004fc                __data_load_start = LOADADDR (.data)
+                0x00000530                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800223        0x0
+.noinit         0x0080020e        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800223                _end = .
+                0x0080020e                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -567,7 +582,6 @@ END GROUP
  *(.comment)
  .comment       0x00000000       0x30 i2c.o
                                  0x31 (size before relaxing)
- .comment       0x00000030       0x31 LSM6DS3.o
  .comment       0x00000030       0x31 spi.o
  .comment       0x00000030       0x31 xbee.o
  .comment       0x00000030       0x31 main.o
@@ -592,78 +606,69 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x148
+.debug_aranges  0x00000000      0x108
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x70 i2c.o
  .debug_aranges
-                0x00000070       0x40 LSM6DS3.o
+                0x00000070       0x40 spi.o
  .debug_aranges
-                0x000000b0       0x40 spi.o
+                0x000000b0       0x28 xbee.o
  .debug_aranges
-                0x000000f0       0x28 xbee.o
- .debug_aranges
-                0x00000118       0x30 main.o
+                0x000000d8       0x30 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1667
+.debug_info     0x00000000     0x13e1
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_info    0x000005f4      0x3c3 i2c.o
- .debug_info    0x000009b7      0x4a7 LSM6DS3.o
- .debug_info    0x00000e5e      0x36b spi.o
- .debug_info    0x000011c9      0x149 xbee.o
- .debug_info    0x00001312      0x355 main.o
+ .debug_info    0x000009b7      0x36b spi.o
+ .debug_info    0x00000d22      0x149 xbee.o
+ .debug_info    0x00000e6b      0x576 main.o
 
-.debug_abbrev   0x00000000      0xbc5
+.debug_abbrev   0x00000000      0xaf6
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_abbrev  0x000005a2      0x152 i2c.o
- .debug_abbrev  0x000006f4       0xdc LSM6DS3.o
- .debug_abbrev  0x000007d0      0x154 spi.o
- .debug_abbrev  0x00000924       0xdf xbee.o
- .debug_abbrev  0x00000a03      0x1c2 main.o
+ .debug_abbrev  0x000006f4      0x154 spi.o
+ .debug_abbrev  0x00000848       0xdf xbee.o
+ .debug_abbrev  0x00000927      0x1cf main.o
 
-.debug_line     0x00000000      0xce4
+.debug_line     0x00000000      0xb43
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_line    0x00000133      0x292 i2c.o
- .debug_line    0x000003c5      0x209 LSM6DS3.o
- .debug_line    0x000005ce      0x278 spi.o
- .debug_line    0x00000846      0x1a7 xbee.o
- .debug_line    0x000009ed      0x2f7 main.o
+ .debug_line    0x000003c5      0x278 spi.o
+ .debug_line    0x0000063d      0x1a7 xbee.o
+ .debug_line    0x000007e4      0x35f main.o
 
-.debug_frame    0x00000000      0x2f8
+.debug_frame    0x00000000      0x264
  *(.debug_frame)
  .debug_frame   0x00000000      0x100 i2c.o
- .debug_frame   0x00000100       0x94 LSM6DS3.o
- .debug_frame   0x00000194       0xcc spi.o
- .debug_frame   0x00000260       0x40 xbee.o
- .debug_frame   0x000002a0       0x58 main.o
+ .debug_frame   0x00000100       0xcc spi.o
+ .debug_frame   0x000001cc       0x40 xbee.o
+ .debug_frame   0x0000020c       0x58 main.o
 
-.debug_str      0x00000000      0x67f
+.debug_str      0x00000000      0x668
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_str     0x00000208      0x216 i2c.o
                                 0x25b (size before relaxing)
- .debug_str     0x0000041e       0x57 LSM6DS3.o
-                                0x22d (size before relaxing)
- .debug_str     0x00000475       0xf4 spi.o
+ .debug_str     0x0000041e       0xfd spi.o
                                 0x285 (size before relaxing)
- .debug_str     0x00000569       0x42 xbee.o
+ .debug_str     0x0000051b       0x42 xbee.o
                                 0x1d4 (size before relaxing)
- .debug_str     0x000005ab       0xd4 main.o
-                                0x2d5 (size before relaxing)
+ .debug_str     0x0000055d      0x10b main.o
+                                0x318 (size before relaxing)
 
-.debug_loc      0x00000000      0xa41
+.debug_loc      0x00000000      0xbbe
  *(.debug_loc)
  .debug_loc     0x00000000      0x336 i2c.o
- .debug_loc     0x00000336       0xbc LSM6DS3.o
- .debug_loc     0x000003f2      0x39c spi.o
- .debug_loc     0x0000078e      0x1de xbee.o
- .debug_loc     0x0000096c       0xd5 main.o
+ .debug_loc     0x00000336      0x39c spi.o
+ .debug_loc     0x000006d2      0x1de xbee.o
+ .debug_loc     0x000008b0      0x30e main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -683,13 +688,12 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000      0x148
+.debug_ranges   0x00000000      0x130
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x60 i2c.o
- .debug_ranges  0x00000060       0x30 LSM6DS3.o
- .debug_ranges  0x00000090       0x30 spi.o
- .debug_ranges  0x000000c0       0x50 xbee.o
- .debug_ranges  0x00000110       0x38 main.o
+ .debug_ranges  0x00000060       0x30 spi.o
+ .debug_ranges  0x00000090       0x50 xbee.o
+ .debug_ranges  0x000000e0       0x50 main.o
 
 .debug_macro
  *(.debug_macro)

@@ -7,7 +7,8 @@
 
 /****** COMPILER VARIABLES ******/
 #define _ECHO    0
-#define _GLOVE   1
+#define _GLOVE   0
+#define _UART_ON 0
 
 /****** GLOBAL DEFINITIONS ******/
 // 2 MHz clock - 16 MHz external crystal w/ divide by 8 fuse enabled
@@ -28,21 +29,30 @@
 #include "../../i2c/i2c.h"
 #include "../../io/mcu_io.h"
 
+#if _UART_ON
+	#include "../../uart/uart.h"
+#endif
+
 #if _GLOVE
 	#include "../../i2c/LSM6DS3.h"
 	#include "../../io/adc.h"
 #else
-	#include "../../uart/uart.h"
 	#include "../../i2c/AD5694.h"
 	#include "../../i2c/PCF8574.h"
 #endif
 
 /***** GLOBAL VARIABLES ******/
-int   btn0_flag     = 0;
-int   btn1_flag     = 0;
-int   btn2_flag     = 0;
-int   btn3_flag     = 0;
-int   new_data_flag = 0;
+uint8_t  btn0_flag     = 0;
+uint8_t  btn1_flag     = 0;
+uint8_t  btn2_flag     = 0;
+uint8_t  btn3_flag     = 0;
+uint8_t  new_data_flag = 0;
+uint8_t  rcv_btn_flag  = 0;
+uint8_t  rcv_btn       = 0;
+uint8_t  waveform      = 0;
+uint8_t  audio_on      = 0;
+ int16_t prev_z        = 0;
+uint16_t vco_ctrl      = 8000;
 
 #if _GLOVE
 	char  xmit_data[15] = {0};
@@ -52,9 +62,7 @@ int   new_data_flag = 0;
 #endif
 
 /***** INTERRUPTS *****/
-#if _GLOVE
-// enable UART RX interrupt
-#else
+#if _UART_ON
 ISR(USART_RX_vect)
 {
 	char rxdata = (char)getByte();
@@ -86,7 +94,7 @@ int main(void)
 	
     while (1) 
     {
-
+		/****** CHECK SPI BUS ******/
  		if (SPI_ATTN_N_LOW)
  		{
 	 		char* spi_rxdata = api_frame_decode((spi_read()));
@@ -106,6 +114,10 @@ int main(void)
 								sns_data[i] = spi_rxdata[i];
 							}
 							break;
+						case '1':
+							rcv_btn_flag = 1;
+							rcv_btn      = spi_rxdata[1];
+							break;
 						default:		break;
 					}
 				 #endif
@@ -116,6 +128,10 @@ int main(void)
 		{
 			PORTD ^= (1<<LED0);
 			btn0_flag = 0;
+			#if _GLOVE
+			char btn_data[2] = {'1','0'};
+			spi_xmit_api_string(btn_data);
+			#endif
 		}
 		
 		if (btn1_flag)
@@ -134,6 +150,10 @@ int main(void)
 		{
 			PORTD ^= (1<<LED1);
 			btn3_flag = 0;
+			#if _GLOVE
+				char btn_data[2] = {'1','3'};
+				spi_xmit_api_string(btn_data);
+			#endif
 		}
 		
 		#if _GLOVE
@@ -155,31 +175,73 @@ int main(void)
 		#else
 			if (new_data_flag)
 			{
-				int16_t g_x      = ( (sns_data[ 2]<<8) | sns_data[ 1]);
-				int16_t g_y      = ( (sns_data[ 4]<<8) | sns_data[ 3]);
-				int16_t g_z      = ( (sns_data[ 6]<<8) | sns_data[ 5]);
-				int16_t a_x      = ( (sns_data[ 8]<<8) | sns_data[ 7]);
-				int16_t a_y      = ( (sns_data[10]<<8) | sns_data[ 9]);
-				int16_t a_z      = ( (sns_data[12]<<8) | sns_data[11]);
-				int16_t adc_data = ( (sns_data[14]<<8) | sns_data[13]);
+				 int16_t g_x      = ( (sns_data[ 2]<<8) | sns_data[ 1]);
+				 int16_t g_y      = ( (sns_data[ 4]<<8) | sns_data[ 3]);
+				 int16_t g_z      = ( (sns_data[ 6]<<8) | sns_data[ 5]);
+				 int16_t a_x      = ( (sns_data[ 8]<<8) | sns_data[ 7]);
+				 int16_t a_y      = ( (sns_data[10]<<8) | sns_data[ 9]);
+				 int16_t a_z      = ( (sns_data[12]<<8) | sns_data[11]);
+				uint16_t adc_data = ( (sns_data[14]<<8) | sns_data[13]);
+				#if _UART_ON
+					writeString("GX: ");
+					writeNum(g_x);
+					writeString("\t\tGY: ");
+					writeNum(g_y);
+					writeString("\t\tGZ: ");
+					writeNum(g_z);
+					writeString("\t\tAX: ");
+					writeNum(a_x);
+					writeString("\t\tAY: ");
+					writeNum(a_y);
+					writeString("\t\tAZ: ");
+					writeNum(a_z);
+	 				writeString("\t\tADC: ");
+	 				writeNum(int16_t(adc_data));
+					writeString("\r\n");
+				#endif
 				
-				writeString("GX: ");
-				writeNum(g_x);
-				writeString("\t\tGY: ");
-				writeNum(g_y);
-				writeString("\t\tGZ: ");
-				writeNum(g_z);
-				writeString("\t\tAX: ");
-				writeNum(a_x);
-				writeString("\t\tAY: ");
-				writeNum(a_y);
-				writeString("\t\tAZ: ");
-				writeNum(a_z);
-				writeString("\t\tADC: ");
-				writeNum(adc_data);
-				writeString("\r\n");
+				a_z      = a_z << 1;
+				adc_data = adc_data << 2;
+				
+				if (audio_on)
+				{
+					i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCA), (adc_data>>8), (adc_data & 0xFF));
+					i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCO), (a_z>>8), (a_z & 0xFF));
+				}
+				else
+				{
+					i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCA), 0x00, 0x00);
+					i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCO), 0x00, 0x00);
+				}
 				
 				new_data_flag = 0;
+			}
+			if (rcv_btn_flag)
+			{
+				switch (rcv_btn)
+				{
+					case '0':
+						audio_on ^= 0x01;
+						break;
+					case '1': break;
+					case '2': break;
+					case '3':
+						switch (waveform)
+						{
+							case 0:
+								i2c_write_byte_no_addr(PCF8574A_ADDR, (WF_SIN | FLT_DIR) );
+								waveform ++;
+								break;
+							case 1:
+								i2c_write_byte_no_addr(PCF8574A_ADDR, (WF_SQR | FLT_DIR) );
+								waveform = 0;
+								break;
+							default:  break;
+						}
+						break;
+					default:  break;
+				}
+				rcv_btn_flag = 0;
 			}
 		#endif
 	
@@ -210,6 +272,13 @@ void config_io(void)
 	BTN_IN_EN();
 	BTN_INT_EN();
 	BTN_INTMSK();
+	
+	#if _UART_ON
+		// enable uart interrupt
+		RX_INTEN();
+		// initialize UART interface
+		initUART();
+	#endif
 
 	#if _GLOVE
 		// configure 6DoF
@@ -218,10 +287,6 @@ void config_io(void)
 		ADC_IN1_SEL();
 		ADC_EN();
 	#else
-		// enable uart interrupt
-		RX_INTEN();
-		// initialize UART interface
-		initUART();
 		// set LOAD DAC signal
 		LDAC_OUT_EN();
 		LDAC_N_ON();
@@ -229,6 +294,6 @@ void config_io(void)
 		i2c_write_two(AD5694_ADDR, DAC_PWR,                 0x00, 0x00);
 		i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCO), 0x20, 0x80);
 		i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCF), 0x08, 0x80);
-		i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCA), 0x20, 0x80);
+		i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCA), 0x00, 0x80);
 	#endif
 }

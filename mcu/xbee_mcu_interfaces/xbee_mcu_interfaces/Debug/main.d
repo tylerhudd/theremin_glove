@@ -21,8 +21,7 @@ main.d main.o: .././main.c \
  .././../../xbee/../io/mcu_io.h .././../../xbee/../spi/spi.h \
  .././../../xbee/../xbee/api_frame.h .././../../xbee/api_frame.h \
  .././../../i2c/i2c.h .././../../i2c/../io/mcu_io.h \
- .././../../io/mcu_io.h .././../../i2c/LSM6DS3.h \
- .././../../i2c/../i2c/i2c.h .././../../io/adc.h
+ .././../../io/mcu_io.h .././../../i2c/AD5694.h .././../../i2c/PCF8574.h
 
 c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -80,8 +79,6 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\
 
 .././../../io/mcu_io.h:
 
-.././../../i2c/LSM6DS3.h:
+.././../../i2c/AD5694.h:
 
-.././../../i2c/../i2c/i2c.h:
-
-.././../../io/adc.h:
+.././../../i2c/PCF8574.h:

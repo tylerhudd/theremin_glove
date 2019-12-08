@@ -50,25 +50,28 @@ Discarded input sections
                 0x00000000       0x52 LSM6DS3.o
  .text.read_acc
                 0x00000000       0x52 LSM6DS3.o
+ .text.read_acc_z
+                0x00000000       0x3a LSM6DS3.o
  .text.read_gyroacc
                 0x00000000       0x76 LSM6DS3.o
- .bss.data.1791
+ .bss.data.1797
                 0x00000000        0xc LSM6DS3.o
- .bss.acc.1787  0x00000000        0x6 LSM6DS3.o
- .bss.gyro.1783
+ .bss.acc.1793  0x00000000        0x2 LSM6DS3.o
+ .bss.acc.1789  0x00000000        0x6 LSM6DS3.o
+ .bss.gyro.1785
                 0x00000000        0x6 LSM6DS3.o
- .bss.temp.1779
+ .bss.temp.1781
                 0x00000000        0x2 LSM6DS3.o
- .debug_info    0x00000000      0x4a8 LSM6DS3.o
+ .debug_info    0x00000000      0x541 LSM6DS3.o
  .debug_abbrev  0x00000000       0xdc LSM6DS3.o
- .debug_loc     0x00000000       0xbc LSM6DS3.o
+ .debug_loc     0x00000000       0xeb LSM6DS3.o
  .debug_aranges
-                0x00000000       0x40 LSM6DS3.o
- .debug_ranges  0x00000000       0x30 LSM6DS3.o
- .debug_line    0x00000000      0x209 LSM6DS3.o
- .debug_str     0x00000000      0x22d LSM6DS3.o
+                0x00000000       0x48 LSM6DS3.o
+ .debug_ranges  0x00000000       0x38 LSM6DS3.o
+ .debug_line    0x00000000      0x250 LSM6DS3.o
+ .debug_str     0x00000000      0x238 LSM6DS3.o
  .comment       0x00000000       0x31 LSM6DS3.o
- .debug_frame   0x00000000       0x94 LSM6DS3.o
+ .debug_frame   0x00000000       0xb0 LSM6DS3.o
  .text          0x00000000        0x0 spi.o
  .data          0x00000000        0x0 spi.o
  .bss           0x00000000        0x0 spi.o
@@ -492,55 +495,55 @@ END GROUP
                 0x00800134                _edata = .
                 0x00800134                PROVIDE (__data_end, .)
 
-.bss            0x00800134       0xdb
+.bss            0x00800134       0xd1
                 0x00800134                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss.spi_msg.1799
                 0x00800134       0x40 spi.o
  .bss.msg.1777  0x00800174       0x40 xbee.o
- .bss.sns_data  0x008001b4        0xf main.o
+ .bss.sns_data  0x008001b4        0x5 main.o
                 0x008001b4                sns_data
- .bss.audio_on  0x008001c3        0x1 main.o
-                0x008001c3                audio_on
- .bss.filter    0x008001c4        0x1 main.o
-                0x008001c4                filter
- .bss.waveform  0x008001c5        0x1 main.o
-                0x008001c5                waveform
- .bss.rcv_btn   0x008001c6        0x1 main.o
-                0x008001c6                rcv_btn
+ .bss.audio_on  0x008001b9        0x1 main.o
+                0x008001b9                audio_on
+ .bss.filter    0x008001ba        0x1 main.o
+                0x008001ba                filter
+ .bss.waveform  0x008001bb        0x1 main.o
+                0x008001bb                waveform
+ .bss.rcv_btn   0x008001bc        0x1 main.o
+                0x008001bc                rcv_btn
  .bss.rcv_btn_flag
-                0x008001c7        0x1 main.o
-                0x008001c7                rcv_btn_flag
+                0x008001bd        0x1 main.o
+                0x008001bd                rcv_btn_flag
  .bss.new_data_flag
-                0x008001c8        0x1 main.o
-                0x008001c8                new_data_flag
+                0x008001be        0x1 main.o
+                0x008001be                new_data_flag
  .bss.btn3_flag
-                0x008001c9        0x1 main.o
-                0x008001c9                btn3_flag
+                0x008001bf        0x1 main.o
+                0x008001bf                btn3_flag
  .bss.btn2_flag
-                0x008001ca        0x1 main.o
-                0x008001ca                btn2_flag
+                0x008001c0        0x1 main.o
+                0x008001c0                btn2_flag
  .bss.btn1_flag
-                0x008001cb        0x1 main.o
-                0x008001cb                btn1_flag
+                0x008001c1        0x1 main.o
+                0x008001c1                btn1_flag
  .bss.btn0_flag
-                0x008001cc        0x1 main.o
-                0x008001cc                btn0_flag
+                0x008001c2        0x1 main.o
+                0x008001c2                btn0_flag
  *(COMMON)
- COMMON         0x008001cd       0x42 spi.o
-                0x008001cd                spi_miso_buf
-                0x0080020d                rd_data
-                0x0080020e                num_chars_rcv
-                0x0080020f                PROVIDE (__bss_end, .)
+ COMMON         0x008001c3       0x42 spi.o
+                0x008001c3                spi_miso_buf
+                0x00800203                rd_data
+                0x00800204                num_chars_rcv
+                0x00800205                PROVIDE (__bss_end, .)
                 0x00000562                __data_load_start = LOADADDR (.data)
                 0x00000596                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080020f        0x0
+.noinit         0x00800205        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080020f                _end = .
+                0x00800205                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -622,13 +625,13 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x146c
+.debug_info     0x00000000     0x1430
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_info    0x000005f4      0x3c3 i2c.o
  .debug_info    0x000009b7      0x36b spi.o
  .debug_info    0x00000d22      0x149 xbee.o
- .debug_info    0x00000e6b      0x601 main.o
+ .debug_info    0x00000e6b      0x5c5 main.o
 
 .debug_abbrev   0x00000000      0xb03
  *(.debug_abbrev)
@@ -665,12 +668,12 @@ END GROUP
  .debug_str     0x0000055d      0x112 main.o
                                 0x31f (size before relaxing)
 
-.debug_loc      0x00000000      0xcc7
+.debug_loc      0x00000000      0xab5
  *(.debug_loc)
  .debug_loc     0x00000000      0x336 i2c.o
  .debug_loc     0x00000336      0x39c spi.o
  .debug_loc     0x000006d2      0x1de xbee.o
- .debug_loc     0x000008b0      0x417 main.o
+ .debug_loc     0x000008b0      0x205 main.o
 
 .debug_macinfo
  *(.debug_macinfo)

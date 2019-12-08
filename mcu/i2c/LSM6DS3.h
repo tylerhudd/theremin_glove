@@ -37,7 +37,7 @@ void LSM6DS3_init(void);
 char* read_temp(void);
 char* read_gyro(void);
 char* read_acc(void);
-char* read_acc_z(void)
+char* read_acc_z(void);
 char* read_gyroacc(void);
 
 #endif /* LSM6DS3_H */

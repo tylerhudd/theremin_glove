@@ -56,10 +56,10 @@ uint8_t  audio_on      = 0;
 uint16_t vco_ctrl      = 8000;
 
 #if _GLOVE
-	char  xmit_data[15] = {0};
+	char  xmit_data[5] = {0};
 #else
 	char  spi_miso_buf[MAX_API_FRAME_SIZE];
-	char  sns_data[15] = {0};
+	char  sns_data[5] = {0};
 #endif
 
 /***** INTERRUPTS *****/
@@ -110,7 +110,7 @@ int main(void)
 					{
 						//case '0':	strcpy(sns_data,spi_rxdata);	break;
 						case '0':
-							for(uint8_t i=0; i<15; i++)
+							for(uint8_t i=0; i<5; i++)
 							{
 								sns_data[i] = spi_rxdata[i];
 							}
@@ -167,42 +167,54 @@ int main(void)
 		}
 		
 		#if _GLOVE
-			char* ag_data       = read_gyroacc();
-			// set type of transmission byte (ASCII 0 = sensor data)
+// 			char* ag_data       = read_gyroacc();
+// 			// set type of transmission byte (ASCII 0 = sensor data)
+// 			xmit_data[0] = '0';
+//  			// place accelerometer and gyroscope data into transmit data buffer
+//  			for (uint8_t i = 0; i < 12; i++)
+//  			{
+//  				xmit_data[i+1] = ag_data[i];
+//  			}
+//  			// read and store flex sensor
+//  			ADC_STRT();
+//  			while( ADCSRA & (1<<ADSC) );
+//  			xmit_data[14] = ADC>>8;
+//  			xmit_data[13] = ADC & 0xFF;
+
+			char* ag_data    = read_acc_z();
 			xmit_data[0] = '0';
- 			// place accelerometer and gyroscope data into transmit data buffer
- 			for (uint8_t i = 0; i < 12; i++)
- 			{
- 				xmit_data[i+1] = ag_data[i];
- 			}
- 			// read and store flex sensor
- 			ADC_STRT();
- 			while( ADCSRA & (1<<ADSC) );
- 			xmit_data[14] = ADC>>8;
- 			xmit_data[13] = ADC & 0xFF;
+			xmit_data[1] = ag_data[0];
+			xmit_data[2] = ag_data[1];
+			ADC_STRT();
+			while( ADCSRA & (1<<ADSC) );
+			xmit_data[3] = ADC & 0xFF;
+			xmit_data[4] = ADC>>8;
  			// transmit sensor data
  			spi_xmit_api_string(xmit_data);
 		#else
 			if (new_data_flag)
 			{
-				 int16_t g_x      = ( (sns_data[ 2]<<8) | sns_data[ 1]);
-				 int16_t g_y      = ( (sns_data[ 4]<<8) | sns_data[ 3]);
-				 int16_t g_z      = ( (sns_data[ 6]<<8) | sns_data[ 5]);
-				 int16_t a_x      = ( (sns_data[ 8]<<8) | sns_data[ 7]);
-				 int16_t a_y      = ( (sns_data[10]<<8) | sns_data[ 9]);
-				 int16_t a_z      = ( (sns_data[12]<<8) | sns_data[11]);
-				uint16_t adc_data = ( (sns_data[14]<<8) | sns_data[13]);
+				int16_t a_x      = 0;
+				int16_t a_z      = ( (sns_data[ 2]<<8) | sns_data[ 1]);
+			   uint16_t adc_data = ( (sns_data[ 4]<<8) | sns_data[ 3]);
+// 				 int16_t g_x      = ( (sns_data[ 2]<<8) | sns_data[ 1]);
+// 				 int16_t g_y      = ( (sns_data[ 4]<<8) | sns_data[ 3]);
+// 				 int16_t g_z      = ( (sns_data[ 6]<<8) | sns_data[ 5]);
+// 				 int16_t a_x      = ( (sns_data[ 8]<<8) | sns_data[ 7]);
+// 				 int16_t a_y      = ( (sns_data[10]<<8) | sns_data[ 9]);
+// 				 int16_t a_z      = ( (sns_data[12]<<8) | sns_data[11]);
+// 				uint16_t adc_data = ( (sns_data[14]<<8) | sns_data[13]);
 				#if _UART_ON
-					writeString("GX: ");
-					writeNum(g_x);
-					writeString("\t\tGY: ");
-					writeNum(g_y);
-					writeString("\t\tGZ: ");
-					writeNum(g_z);
-					writeString("\t\tAX: ");
-					writeNum(a_x);
-					writeString("\t\tAY: ");
-					writeNum(a_y);
+// 					writeString("GX: ");
+// 					writeNum(g_x);
+// 					writeString("\t\tGY: ");
+// 					writeNum(g_y);
+// 					writeString("\t\tGZ: ");
+// 					writeNum(g_z);
+// 					writeString("\t\tAX: ");
+// 					writeNum(a_x);
+// 					writeString("\t\tAY: ");
+// 					writeNum(a_y);
 					writeString("\t\tAZ: ");
 					writeNum(a_z);
 	 				writeString("\t\tADC: ");

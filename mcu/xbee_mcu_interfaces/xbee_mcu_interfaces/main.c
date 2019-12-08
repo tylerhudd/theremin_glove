@@ -50,6 +50,7 @@ uint8_t  new_data_flag = 0;
 uint8_t  rcv_btn_flag  = 0;
 uint8_t  rcv_btn       = 0;
 uint8_t  waveform      = 0;
+uint8_t  filter        = 0;
 uint8_t  audio_on      = 0;
  int16_t prev_z        = 0;
 uint16_t vco_ctrl      = 8000;
@@ -138,12 +139,21 @@ int main(void)
 		{
 			PORTD ^= (1<<LED1);
 			btn1_flag = 0;
+			btn2_flag = 0;
+			#if _GLOVE
+				char btn_data[2] = {'1','1'};
+				spi_xmit_api_string(btn_data);
+			#endif
 		}
 		
 		if (btn2_flag)
 		{
 			PORTD ^= (1<<LED0);
 			btn2_flag = 0;
+			#if _GLOVE
+				char btn_data[2] = {'1','2'};
+				spi_xmit_api_string(btn_data);
+			#endif
 		}
 		
 		if (btn3_flag)
@@ -200,18 +210,23 @@ int main(void)
 					writeString("\r\n");
 				#endif
 				
-				a_z      = a_z << 1;
+				if (a_z < 0) { a_z = 0;        }
+				else         { a_z = a_z << 0; }
+				if (a_x < 0) { a_x = 0;        }
+				else         { a_x = a_x << 4; }
 				adc_data = adc_data << 2;
 				
 				if (audio_on)
 				{
-					i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCA), (adc_data>>8), (adc_data & 0xFF));
+					if (filter) { i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCF), (adc_data>>8), (adc_data & 0xFF)); }
+					else        { i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCA), (adc_data>>8), (adc_data & 0xFF)); }
 					i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCO), (a_z>>8), (a_z & 0xFF));
 				}
 				else
 				{
 					i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCA), 0x00, 0x00);
 					i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCO), 0x00, 0x00);
+					i2c_write_two(AD5694_ADDR, (DAC_WR_UPDATE|DAC_VCF), 0x00, 0x00);
 				}
 				
 				new_data_flag = 0;
@@ -224,7 +239,20 @@ int main(void)
 						audio_on ^= 0x01;
 						break;
 					case '1': break;
-					case '2': break;
+					case '2':
+						switch (filter)
+						{
+							case 0:
+								i2c_write_byte_no_addr(PCF8574A_ADDR, (WF_SQR | FLT_DIR) );
+								filter ++;
+								break;
+							case 1: 
+								i2c_write_byte_no_addr(PCF8574A_ADDR, (WF_SQR | FLT_HPF) );
+								filter = 0;
+								break;
+							default:  break;
+						}
+						break;
 					case '3':
 						switch (waveform)
 						{
@@ -246,7 +274,7 @@ int main(void)
 		#endif
 	
 		#if _GLOVE
-			_delay_ms(50);
+			_delay_ms(20);
 		#else
 			_delay_ms(1);
 		#endif

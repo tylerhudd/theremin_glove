@@ -59,7 +59,7 @@ Discarded input sections
                 0x00000000        0x6 LSM6DS3.o
  .bss.temp.1779
                 0x00000000        0x2 LSM6DS3.o
- .debug_info    0x00000000      0x4a7 LSM6DS3.o
+ .debug_info    0x00000000      0x4a8 LSM6DS3.o
  .debug_abbrev  0x00000000       0xdc LSM6DS3.o
  .debug_loc     0x00000000       0xbc LSM6DS3.o
  .debug_aranges
@@ -324,7 +324,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x4fc
+.text           0x00000000      0x562
  *(.vectors)
  .vectors       0x00000000       0x68 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -443,16 +443,16 @@ END GROUP
  .text.config_io
                 0x000002fe       0x68 main.o
                 0x000002fe                config_io
- .text.main     0x00000366      0x180 main.o
+ .text.main     0x00000366      0x1e6 main.o
                 0x00000366                main
  .text.avr-libc
-                0x000004e6       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strcmp.o)
-                0x000004e6                strcmp
-                0x000004f8                . = ALIGN (0x2)
+                0x0000054c       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strcmp.o)
+                0x0000054c                strcmp
+                0x0000055e                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000004f8        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x000004f8                _exit
-                0x000004f8                exit
+ .fini9         0x0000055e        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x0000055e                _exit
+                0x0000055e                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -471,11 +471,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000004f8        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x0000055e        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000004fc                _etext = .
+                0x00000562                _etext = .
 
-.data           0x00800100       0x34 load address 0x000004fc
+.data           0x00800100       0x34 load address 0x00000562
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -492,7 +492,7 @@ END GROUP
                 0x00800134                _edata = .
                 0x00800134                PROVIDE (__data_end, .)
 
-.bss            0x00800134       0xda
+.bss            0x00800134       0xdb
                 0x00800134                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
@@ -503,42 +503,44 @@ END GROUP
                 0x008001b4                sns_data
  .bss.audio_on  0x008001c3        0x1 main.o
                 0x008001c3                audio_on
- .bss.waveform  0x008001c4        0x1 main.o
-                0x008001c4                waveform
- .bss.rcv_btn   0x008001c5        0x1 main.o
-                0x008001c5                rcv_btn
+ .bss.filter    0x008001c4        0x1 main.o
+                0x008001c4                filter
+ .bss.waveform  0x008001c5        0x1 main.o
+                0x008001c5                waveform
+ .bss.rcv_btn   0x008001c6        0x1 main.o
+                0x008001c6                rcv_btn
  .bss.rcv_btn_flag
-                0x008001c6        0x1 main.o
-                0x008001c6                rcv_btn_flag
- .bss.new_data_flag
                 0x008001c7        0x1 main.o
-                0x008001c7                new_data_flag
- .bss.btn3_flag
+                0x008001c7                rcv_btn_flag
+ .bss.new_data_flag
                 0x008001c8        0x1 main.o
-                0x008001c8                btn3_flag
- .bss.btn2_flag
+                0x008001c8                new_data_flag
+ .bss.btn3_flag
                 0x008001c9        0x1 main.o
-                0x008001c9                btn2_flag
- .bss.btn1_flag
+                0x008001c9                btn3_flag
+ .bss.btn2_flag
                 0x008001ca        0x1 main.o
-                0x008001ca                btn1_flag
- .bss.btn0_flag
+                0x008001ca                btn2_flag
+ .bss.btn1_flag
                 0x008001cb        0x1 main.o
-                0x008001cb                btn0_flag
+                0x008001cb                btn1_flag
+ .bss.btn0_flag
+                0x008001cc        0x1 main.o
+                0x008001cc                btn0_flag
  *(COMMON)
- COMMON         0x008001cc       0x42 spi.o
-                0x008001cc                spi_miso_buf
-                0x0080020c                rd_data
-                0x0080020d                num_chars_rcv
-                0x0080020e                PROVIDE (__bss_end, .)
-                0x000004fc                __data_load_start = LOADADDR (.data)
-                0x00000530                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x008001cd       0x42 spi.o
+                0x008001cd                spi_miso_buf
+                0x0080020d                rd_data
+                0x0080020e                num_chars_rcv
+                0x0080020f                PROVIDE (__bss_end, .)
+                0x00000562                __data_load_start = LOADADDR (.data)
+                0x00000596                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080020e        0x0
+.noinit         0x0080020f        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x0080020e                _end = .
+                0x0080020f                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -620,29 +622,29 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x13e1
+.debug_info     0x00000000     0x146c
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_info    0x000005f4      0x3c3 i2c.o
  .debug_info    0x000009b7      0x36b spi.o
  .debug_info    0x00000d22      0x149 xbee.o
- .debug_info    0x00000e6b      0x576 main.o
+ .debug_info    0x00000e6b      0x601 main.o
 
-.debug_abbrev   0x00000000      0xaf6
+.debug_abbrev   0x00000000      0xb03
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_abbrev  0x000005a2      0x152 i2c.o
  .debug_abbrev  0x000006f4      0x154 spi.o
  .debug_abbrev  0x00000848       0xdf xbee.o
- .debug_abbrev  0x00000927      0x1cf main.o
+ .debug_abbrev  0x00000927      0x1dc main.o
 
-.debug_line     0x00000000      0xb43
+.debug_line     0x00000000      0xb8c
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x133 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_line    0x00000133      0x292 i2c.o
  .debug_line    0x000003c5      0x278 spi.o
  .debug_line    0x0000063d      0x1a7 xbee.o
- .debug_line    0x000007e4      0x35f main.o
+ .debug_line    0x000007e4      0x3a8 main.o
 
 .debug_frame    0x00000000      0x264
  *(.debug_frame)
@@ -651,7 +653,7 @@ END GROUP
  .debug_frame   0x000001cc       0x40 xbee.o
  .debug_frame   0x0000020c       0x58 main.o
 
-.debug_str      0x00000000      0x668
+.debug_str      0x00000000      0x66f
  *(.debug_str)
  .debug_str     0x00000000      0x208 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.2.209/gcc/dev/atmega328p/avr5/crtatmega328p.o
  .debug_str     0x00000208      0x216 i2c.o
@@ -660,15 +662,15 @@ END GROUP
                                 0x285 (size before relaxing)
  .debug_str     0x0000051b       0x42 xbee.o
                                 0x1d4 (size before relaxing)
- .debug_str     0x0000055d      0x10b main.o
-                                0x318 (size before relaxing)
+ .debug_str     0x0000055d      0x112 main.o
+                                0x31f (size before relaxing)
 
-.debug_loc      0x00000000      0xbbe
+.debug_loc      0x00000000      0xcc7
  *(.debug_loc)
  .debug_loc     0x00000000      0x336 i2c.o
  .debug_loc     0x00000336      0x39c spi.o
  .debug_loc     0x000006d2      0x1de xbee.o
- .debug_loc     0x000008b0      0x30e main.o
+ .debug_loc     0x000008b0      0x417 main.o
 
 .debug_macinfo
  *(.debug_macinfo)

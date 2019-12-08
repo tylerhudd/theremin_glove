@@ -11,7 +11,7 @@
 // initialize I2C interface
 void i2c_master_init(void)
 {
-	TWBR = 2;			// set the division factor to 2 for SCL = 100kHz
+	TWBR = 2;			// set the division factor to 0 for SCL = 400kHz
 	TWSR = 0;			// additional prescaler not needed
 	I2C_EN();
 }

@@ -14,8 +14,8 @@
 // set the SPI control register
 //   - SPE  = 1 --> SPI  enabled
 //   - MSTR = 1 --> SPI interface is in master mode
-//   - SPR0 = 1 --> SCK frequency is fosc/16
-#define SPI_EN()       SPCR  = (1<<SPE) | (1<<MSTR) | (1<<SPR0);
+//   - SPR0 = 1 --> SCK frequency is fosc/4
+#define SPI_EN()       SPCR  = (1<<SPE) | (1<<MSTR);
 
 // SPI conditional macros
 #define SPI_ATTN_N_LOW !(PINB & (1<<SPI_ATTN_N))

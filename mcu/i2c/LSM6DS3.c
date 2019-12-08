@@ -12,7 +12,7 @@ void LSM6DS3_init(void)
 	// set fourth fifo to no decimation
 	i2c_write_byte(LSM6DS3_ADDR, FIFO_CTRL4, 0x09);
 	// configure accelerometer ODR 13Hz
-	i2c_write_byte(LSM6DS3_ADDR, CTRL1_XL, 0x10);
+	i2c_write_byte(LSM6DS3_ADDR, CTRL1_XL, 0x80);
 	// configure gyroscope ODR 13Hz
 	i2c_write_byte(LSM6DS3_ADDR, CTRL2_G, 0x10);
 	
@@ -74,6 +74,24 @@ char* read_acc(void)
 	acc[3] = i2c_read_ack();
 	acc[4] = i2c_read_ack();
 	acc[5] = i2c_read_nack();
+	i2c_stop_cmd();
+	
+	return acc;
+}
+
+
+// read 6DoF accelerometer
+char* read_acc_z(void)
+{
+	static char acc[2] = {0};
+	
+	i2c_start_cmd();
+	i2c_write( (LSM6DS3_ADDR<<1) );
+	i2c_write(OUTZ_L_XL);
+	i2c_start_cmd();
+	i2c_write( (LSM6DS3_ADDR<<1) | 1);
+	acc[0] = i2c_read_ack();
+	acc[1] = i2c_read_nack();
 	i2c_stop_cmd();
 	
 	return acc;
